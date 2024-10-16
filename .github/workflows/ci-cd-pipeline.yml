@@ -16,21 +16,20 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '18' 
+          node-version: '18'
 
       - name: Install dependencies
-        run: npm install
+        run: |
+          npm install   # or yarn install
+        working-directory: ./frontend 
 
       - name: Run tests
-        run: npm test
-
-      - name: Install dependencies with Yarn
-        run: yarn install
-
-      - name: Run tests with Yarn
-        run: yarn test
+        run: |
+          npm test      # or yarn test
+        working-directory: ./frontend  
 
       - name: Deploy
-        if: success() 
+        if: success()
         run: |
           echo "Deploying to production..."
+          # actual deployment commands, e.g., rsync, scp, or any deployment script
