@@ -3,7 +3,6 @@ import {
   Box,
   Heading,
   Text,
-  Spinner,
   SimpleGrid,
   Image,
   Button,
@@ -11,6 +10,7 @@ import {
 } from "@chakra-ui/react";
 import { useParams } from "react-router-dom";
 import api from "../../../api/api";
+import Loader from "../../Loader/Loader";
 
 interface Photo {
   id: number;
@@ -27,7 +27,9 @@ const Album: React.FC = () => {
   useEffect(() => {
     const fetchPhotos = async () => {
       try {
-        const response = await api.get<Photo[]>(`/api/photos?albumId=${albumId}`);
+        const response = await api.get<Photo[]>(
+          `/api/photos?albumId=${albumId}`,
+        );
         setPhotos(response.data);
       } catch (error) {
         console.error("Error fetching photos:", error);
@@ -49,7 +51,7 @@ const Album: React.FC = () => {
   if (loading) {
     return (
       <Box textAlign="center" py={10}>
-        <Spinner size="xl" />
+        <Loader message="Loading photos..." size={40} color="#3498db" />
       </Box>
     );
   }
