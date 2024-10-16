@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "test": "jest",
     "build": "tsc -b && vite build",
     "format": "prettier --write .",
     "preview": "vite preview"
