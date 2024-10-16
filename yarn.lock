@@ -205,7 +205,7 @@
 
 "@chakra-ui/react@^2.10.2":
   version "2.10.2"
-  resolved "https://registry.yarnpkg.com/@chakra-ui/react/-/react-2.10.2.tgz#9fc718ab809d8a8003a8c688b2b6fda44f63741a"
+  resolved "https://registry.npmjs.org/@chakra-ui/react/-/react-2.10.2.tgz#9fc718ab809d8a8003a8c688b2b6fda44f63741a"
   integrity sha512-TfIHTqTlxTHYJZBtpiR5EZasPUrLYKJxdbHkdOJb5G1OQ+2c5kKl5XA7c2pMtsEptzb7KxAAIB62t3hxdfWp1w==
   dependencies:
     "@chakra-ui/hooks" "2.4.2"
@@ -300,7 +300,7 @@
 
 "@emotion/react@^11.13.3":
   version "11.13.3"
-  resolved "https://registry.yarnpkg.com/@emotion/react/-/react-11.13.3.tgz#a69d0de2a23f5b48e0acf210416638010e4bd2e4"
+  resolved "https://registry.npmjs.org/@emotion/react/-/react-11.13.3.tgz#a69d0de2a23f5b48e0acf210416638010e4bd2e4"
   integrity sha512-lIsdU6JNrmYfJ5EbUCf4xW1ovy5wKQ2CkPRM4xogziOxH1nXxBSjpC9YqbFAP7circxMfYp+6x676BqWcEiixg==
   dependencies:
     "@babel/runtime" "^7.18.3"
@@ -330,7 +330,7 @@
 
 "@emotion/styled@^11.13.0":
   version "11.13.0"
-  resolved "https://registry.yarnpkg.com/@emotion/styled/-/styled-11.13.0.tgz#633fd700db701472c7a5dbef54d6f9834e9fb190"
+  resolved "https://registry.npmjs.org/@emotion/styled/-/styled-11.13.0.tgz#633fd700db701472c7a5dbef54d6f9834e9fb190"
   integrity sha512-tkzkY7nQhW/zC4hztlwucpT8QEZ6eUzpXDRhww/Eej4tFfO0FxQYWRyg/c5CCXa4d/f174kqeXYjuQRnhzf6dA==
   dependencies:
     "@babel/runtime" "^7.18.3"
@@ -1616,7 +1616,7 @@ form-data@^4.0.0:
 
 framer-motion@^11.11.9:
   version "11.11.9"
-  resolved "https://registry.yarnpkg.com/framer-motion/-/framer-motion-11.11.9.tgz#a60ddf5abbd924812df923068628537a5c6ad8b9"
+  resolved "https://registry.npmjs.org/framer-motion/-/framer-motion-11.11.9.tgz#a60ddf5abbd924812df923068628537a5c6ad8b9"
   integrity sha512-XpdZseuCrZehdHGuW22zZt3SF5g6AHJHJi7JwQIigOznW4Jg1n0oGPMJQheMaKLC+0rp5gxUKMRYI6ytd3q4RQ==
   dependencies:
     tslib "^2.4.0"
@@ -2676,9 +2676,9 @@ typescript-eslint@^8.7.0:
     "@typescript-eslint/parser" "8.9.0"
     "@typescript-eslint/utils" "8.9.0"
 
-typescript@^5.5.3:
+typescript@^5.6.3:
   version "5.6.3"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-5.6.3.tgz#5f3449e31c9d94febb17de03cc081dd56d81db5b"
+  resolved "https://registry.npmjs.org/typescript/-/typescript-5.6.3.tgz#5f3449e31c9d94febb17de03cc081dd56d81db5b"
   integrity sha512-hjcS1mhfuyi4WW8IWtjP7brDrG2cuDZukyrYrSauoXGNgx0S7zceP07adYkJycEr56BOUTNPzbInooiN3fn1qw==
 
 unbox-primitive@^1.0.2:
