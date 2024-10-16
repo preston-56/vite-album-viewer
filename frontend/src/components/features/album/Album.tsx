@@ -9,7 +9,6 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { useParams } from "react-router-dom";
-import api from "../../../api/api";
 import Loader from "../../Loader/Loader";
 
 interface Photo {
@@ -27,10 +26,14 @@ const Album: React.FC = () => {
   useEffect(() => {
     const fetchPhotos = async () => {
       try {
-        const response = await api.get<Photo[]>(
-          `/api/photos?albumId=${albumId}`,
+        const response = await fetch(
+          `http://127.0.0.1:4000/api/photos?albumId=${albumId}`,
         );
-        setPhotos(response.data);
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        const data = await response.json();
+        setPhotos(data);
       } catch (error) {
         console.error("Error fetching photos:", error);
         toast({
@@ -46,7 +49,7 @@ const Album: React.FC = () => {
     };
 
     fetchPhotos();
-  }, [albumId, toast]);
+  }, [albumId, toast]); // Add toast to dependencies for better practice
 
   if (loading) {
     return (
