@@ -1,23 +1,34 @@
 import express from 'express';
 import cors from 'cors';
+import sequelize from './config/database';
+
 import userRoutes from './routes/users';
 import albumRoutes from './routes/albums';
 import photoRoutes from './routes/photos';
 
 const app = express();
-const PORT = 4000;
+const PORT = process.env.PORT || 4000;
 
 app.use(cors({
-  origin: 'http://localhost:5174',
+  origin: '*',
   credentials: true 
 }));
 app.use(express.json());
+
+sequelize.authenticate()
+  .then(() => {
+    console.log('Database connection has been established successfully.');
+  })
+  .catch((error) => {
+    console.error('Unable to connect to the database:', error);
+    process.exit(1);
+  });
 
 app.use('/api/users', userRoutes);
 app.use('/api/albums', albumRoutes);
 app.use('/api/photos', photoRoutes);
 
-// Catch-all route
+// Catch-all route for 404 errors
 app.use((req, res) => {
     res.status(404).json({ message: 'Not Found' });
   });
