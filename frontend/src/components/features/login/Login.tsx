@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import {
   Box,
   Button,
@@ -6,12 +7,12 @@ import {
   FormLabel,
   Input,
   Heading,
+  Text,
   useToast,
 } from "@chakra-ui/react";
 import { auth } from "./firebaseConfig";
 import {
   signInWithEmailAndPassword,
-  signOut,
   GoogleAuthProvider,
   signInWithPopup,
 } from "firebase/auth";
@@ -19,21 +20,35 @@ import {
 const Login: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const toast = useToast();
+  const navigate = useNavigate();
+  const isLoggedIn = !!localStorage.getItem("isLoggedIn");
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      navigate("/home");
+    }
+  }, [isLoggedIn, navigate]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await signInWithEmailAndPassword(auth, email, password);
-      setIsLoggedIn(true);
-      toast({
-        title: "Login successful.",
-        description: "You've logged in successfully!",
-        status: "success",
-        duration: 3000,
-        isClosable: true,
-      });
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password,
+      );
+      if (userCredential.user) {
+        localStorage.setItem("isLoggedIn", "true"); 
+        toast({
+          title: "Login successful.",
+          description: "You've logged in successfully!",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+        });
+        navigate("/home");
+      }
     } catch (error) {
       toast({
         title: "Login failed.",
@@ -48,16 +63,20 @@ const Login: React.FC = () => {
   const handleGoogleLogin = async () => {
     const provider = new GoogleAuthProvider();
     try {
-      await signInWithPopup(auth, provider);
-      setIsLoggedIn(true);
-      toast({
-        title: "Google Login successful.",
-        description: "You've logged in successfully with Google!",
-        status: "success",
-        duration: 3000,
-        isClosable: true,
-      });
+      const result = await signInWithPopup(auth, provider);
+      if (result.user) {
+        localStorage.setItem("isLoggedIn", "true");
+        toast({
+          title: "Google Login successful.",
+          description: "You've logged in successfully with Google!",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+        });
+        navigate("/home");
+      }
     } catch (error) {
+      console.error("Google sign-in error: ", error);
       toast({
         title: "Google Login failed.",
         description: "There was an issue with Google sign-in.",
@@ -68,73 +87,56 @@ const Login: React.FC = () => {
     }
   };
 
-  const handleLogout = async () => {
-    try {
-      await signOut(auth);
-      setIsLoggedIn(false);
-      toast({
-        title: "Logout successful.",
-        description: "You've logged out successfully!",
-        status: "success",
-        duration: 3000,
-        isClosable: true,
-      });
-    } catch (error) {
-      toast({
-        title: "Logout failed.",
-        description: "There was an error logging out.",
-        status: "error",
-        duration: 3000,
-        isClosable: true,
-      });
-    }
-  };
+  if (isLoggedIn) {
+    return (
+      <Box maxW="md" mx="auto" mt={10} p={6}>
+        <Heading mb={6}>You're already logged in!</Heading>
+        <Text mb={4}>
+          Click <Link to="/home">here</Link> to go to your dashboard.
+        </Text>
+      </Box>
+    );
+  }
 
   return (
     <Box maxW="md" mx="auto" mt={10} p={6} borderWidth={1} borderRadius="lg">
-      <Heading mb={6}>{isLoggedIn ? "Welcome Back!" : "Login"}</Heading>
-      {!isLoggedIn ? (
-        <>
-          <form onSubmit={handleLogin}>
-            <FormControl isRequired mb={4}>
-              <FormLabel htmlFor="email">Email</FormLabel>
-              <Input
-                id="email"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="Enter your email"
-              />
-            </FormControl>
-            <FormControl isRequired mb={4}>
-              <FormLabel htmlFor="password">Password</FormLabel>
-              <Input
-                id="password"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Enter your password"
-              />
-            </FormControl>
-            <Button type="submit" colorScheme="teal" width="full">
-              Login
-            </Button>
-          </form>
-
-          <Button
-            mt={4}
-            colorScheme="blue"
-            width="full"
-            onClick={handleGoogleLogin}
-          >
-            Login with Google
-          </Button>
-        </>
-      ) : (
-        <Button colorScheme="red" width="full" onClick={handleLogout}>
-          Logout
+      <Heading mb={6}>Login</Heading>
+      <form onSubmit={handleLogin}>
+        <FormControl isRequired mb={4}>
+          <FormLabel htmlFor="email">Email</FormLabel>
+          <Input
+            id="email"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Enter your email"
+          />
+        </FormControl>
+        <FormControl isRequired mb={4}>
+          <FormLabel htmlFor="password">Password</FormLabel>
+          <Input
+            id="password"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Enter your password"
+          />
+        </FormControl>
+        <Button type="submit" colorScheme="teal" width="full">
+          Login
         </Button>
-      )}
+      </form>
+      <Text mt={4}>
+        Don't have an account? <Link to="/signup">Sign up here</Link>
+      </Text>
+      <Button
+        mt={4}
+        colorScheme="blue"
+        width="full"
+        onClick={handleGoogleLogin}
+      >
+        Login with Google
+      </Button>
     </Box>
   );
 };

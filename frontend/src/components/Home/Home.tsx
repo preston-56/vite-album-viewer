@@ -7,6 +7,7 @@ import {
   SimpleGrid,
   Card,
   CardBody,
+  Flex,
 } from "@chakra-ui/react";
 
 interface User {
@@ -29,12 +30,8 @@ const Home: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const userResponse = await fetch(
-          "https://jsonplaceholder.typicode.com/users",
-        );
-        const albumResponse = await fetch(
-          "https://jsonplaceholder.typicode.com/albums",
-        );
+        const userResponse = await fetch("http://127.0.0.1:4000/api/users");
+        const albumResponse = await fetch("http://127.0.0.1:4000/api/albums");
 
         const usersData = await userResponse.json();
         const albumsData = await albumResponse.json();
@@ -53,9 +50,19 @@ const Home: React.FC = () => {
 
   if (loading) {
     return (
-      <Box textAlign="center" py={10}>
-        <Spinner size="xl" />
-      </Box>
+      <Flex
+        alignItems="center"
+        justifyContent="center"
+        height="100vh"
+        flexDirection="column"
+        textAlign="center"
+        bg="gray.100"
+      >
+        <Spinner size="xl" thickness="4px" speed="0.65s" color="blue.500" />
+        <Text mt={4} fontSize="xl">
+          Loading users and albums...
+        </Text>
+      </Flex>
     );
   }
 
