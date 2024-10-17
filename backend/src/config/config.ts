@@ -1,5 +1,5 @@
 import { Sequelize } from 'sequelize-typescript';
-import * as dotenv from 'dotenv';
+import dotenv from 'dotenv';
 
 dotenv.config();
 
@@ -9,13 +9,13 @@ interface DBConfig {
   database: string;
   host: string;
   port: number;
-  dialect: 'postgres' | 'mysql' | 'sqlite' | 'mariadb' | 'mssql'; // Add other dialects as needed
+  dialect: 'postgres' | 'mysql' | 'sqlite' | 'mariadb' | 'mssql'; 
 }
 
 interface Config {
   development: DBConfig;
   test: DBConfig;
-  production: DBConfig;
+  production: DBConfig; 
 }
 
 const config: Config = {
@@ -45,11 +45,19 @@ const config: Config = {
   }
 };
 
-// Create a Sequelize instance using the development config
-const sequelize = new Sequelize(config.development.database, config.development.username, config.development.password, {
-  host: config.development.host,
-  port: config.development.port,
-  dialect: config.development.dialect,
-});
+let sequelize: Sequelize;
+
+if (process.env.DATABASE_URL) {
+  sequelize = new Sequelize(process.env.DATABASE_URL, {
+    dialect: 'postgres',
+  });
+} else {
+  // Fallback to development configuration
+  sequelize = new Sequelize(config.development.database, config.development.username, config.development.password, {
+    host: config.development.host,
+    port: config.development.port,
+    dialect: config.development.dialect,
+  });
+}
 
 export { sequelize, config };
