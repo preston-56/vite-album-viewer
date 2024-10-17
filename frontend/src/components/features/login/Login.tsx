@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   Box,
@@ -22,6 +22,13 @@ const Login: React.FC = () => {
   const [password, setPassword] = useState("");
   const toast = useToast();
   const navigate = useNavigate();
+  const isLoggedIn = !!localStorage.getItem("isLoggedIn");
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      navigate("/home");
+    }
+  }, [isLoggedIn, navigate]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -79,6 +86,17 @@ const Login: React.FC = () => {
       });
     }
   };
+
+  if (isLoggedIn) {
+    return (
+      <Box maxW="md" mx="auto" mt={10} p={6}>
+        <Heading mb={6}>You're already logged in!</Heading>
+        <Text mb={4}>
+          Click <Link to="/home">here</Link> to go to your dashboard.
+        </Text>
+      </Box>
+    );
+  }
 
   return (
     <Box maxW="md" mx="auto" mt={10} p={6} borderWidth={1} borderRadius="lg">
