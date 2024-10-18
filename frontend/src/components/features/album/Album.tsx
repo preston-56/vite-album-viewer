@@ -27,7 +27,7 @@ const Album: React.FC = () => {
     const fetchPhotos = async () => {
       try {
         const response = await fetch(
-          `http://127.0.0.1:4000/api/photos?albumId=${albumId}`,
+          `https://jsonplaceholder.typicode.com/photos?albumId=${albumId}`,
         );
         if (!response.ok) {
           throw new Error("Network response was not ok");

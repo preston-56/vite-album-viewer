@@ -17,8 +17,8 @@ const Users: React.FC = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const userResponse = await fetch("http://127.0.0.1:4000/api/users");
-        const albumResponse = await fetch("http://127.0.0.1:4000/api/albums");
+        const userResponse = await fetch("https://jsonplaceholder.typicode.com/users");
+        const albumResponse = await fetch("https://jsonplaceholder.typicode.com/albums");
 
         if (!userResponse.ok || !albumResponse.ok) {
           throw new Error("Network response was not ok");

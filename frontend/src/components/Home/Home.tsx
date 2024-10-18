@@ -30,8 +30,8 @@ const Home: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const userResponse = await fetch("http://127.0.0.1:4000/api/users");
-        const albumResponse = await fetch("http://127.0.0.1:4000/api/albums");
+        const userResponse = await fetch("https://jsonplaceholder.typicode.com/users");
+        const albumResponse = await fetch("https://jsonplaceholder.typicode.com/albums");
 
         const usersData = await userResponse.json();
         const albumsData = await albumResponse.json();
