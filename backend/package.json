@@ -6,8 +6,9 @@
   "author": "Preston <prestonosoro56@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start": "ts-node src/index.ts",
+    "start": "node_modules/.bin/ts-node src/index.ts",
     "migrate": "cross-env NODE_ENV=development ts-node scripts/migrate.ts",
+    "build": "yarn install && yarn start",
     "migrate:undo": "cross-env NODE_ENV=development ts-node -r tsconfig-paths/register ./node_modules/.bin/sequelize-cli db:migrate:undo --config src/config/config.ts",
     "seed": "cross-env NODE_ENV=development ts-node -r tsconfig-paths/register ./node_modules/.bin/sequelize-cli db:seed:all --config src/config/config.ts",
     "dev": "cross-env NODE_ENV=development ts-node src/index.ts"
