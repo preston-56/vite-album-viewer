@@ -12,7 +12,7 @@ router.get('/', async (req: Request, res: Response) => {
   }
 });
 
-router.post('/', (req, res) => {
+router.post('/', (req: Request, res: Response) => {
   const { name, username, email } = req.body;
   const newUser = { id: Date.now(), name, username, email }; 
   res.status(201).json(newUser);
