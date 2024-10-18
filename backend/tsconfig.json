@@ -107,8 +107,12 @@
     // "skipDefaultLibCheck": true,                      /* Skip type checking .d.ts files that are included with TypeScript. */
     // "skipLibCheck": true,
     "noImplicitAny": true,
-    "typeRoots": ["./node_modules/@types", "./src/types"]
+    "typeRoots": ["./node_modules/@types", "./src/types"],
     /* Skip type checking all .d.ts files. */
+    "baseUrl": "./src",
+    "paths": {
+      "*": ["types/*"]
+    }
   },
   "include": ["src/**/*.ts", "src/types/**/*"],
   "exclude": ["node_modules"],

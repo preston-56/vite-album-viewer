@@ -1,4 +1,4 @@
-import { Request } from 'express';
+import * as express from 'express';
 
 export interface CustomBody {
   name?: string;
