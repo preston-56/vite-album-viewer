@@ -12,7 +12,7 @@ import albumRoutes from "./routes/albums";
 import photoRoutes from "./routes/photos";
 
 const app = express();
-const PORT = process.env.PORT || 10000;
+const PORT = process.env.PORT || 4000;
 
 app.use(
   cors({
