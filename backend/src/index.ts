@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 import {sequelize} from "./config/config";
-import { initModels } from './models/index.js';
+import { initModels } from './models/index';
 
 import User from './models/User';
 import Album from './models/Album';
