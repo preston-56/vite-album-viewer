@@ -12,7 +12,7 @@
     "build": "tsc",
     "migrate:undo": "cross-env NODE_ENV=development ts-node -r tsconfig-paths/register ./node_modules/.bin/sequelize-cli db:migrate:undo --config src/config/config.ts",
     "seed": "cross-env NODE_ENV=development ts-node -r tsconfig-paths/register ./node_modules/.bin/sequelize-cli db:seed:all --config src/config/config.ts",
-    "dev": "cross-env NODE_ENV=development ts-node src/index.ts"
+    "dev": "ts-node-dev src/index.ts"
   },
   "dependencies": {
     "@types/validator": "^13.12.2",
@@ -29,12 +29,12 @@
   "devDependencies": {
     "@types/axios": "^0.14.0",
     "@types/cors": "^2.8.17",
-    "@types/dotenv": "^8.2.0",
-    "@types/express": "^5.0.0",
+    "@types/express": "^4",
     "@types/node": "^22.7.6",
     "dotenv": "^16.4.5",
     "sequelize-cli": "^6.6.2",
     "ts-node": "^10.9.2",
+    "ts-node-dev": "^2.0.0",
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.6.3"
   }
