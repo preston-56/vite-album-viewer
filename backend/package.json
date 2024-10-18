@@ -5,23 +5,34 @@
   "repository": "git@github.com:preston-56/vite-album-viewer.git",
   "author": "Preston <prestonosoro56@gmail.com>",
   "license": "MIT",
+  "scripts": {
+    "start": "ts-node src/index.ts",
+    "migrate": "cross-env NODE_ENV=development ts-node scripts/migrate.ts",
+    "migrate:undo": "cross-env NODE_ENV=development ts-node -r tsconfig-paths/register ./node_modules/.bin/sequelize-cli db:migrate:undo --config src/config/config.ts",
+    "seed": "cross-env NODE_ENV=development ts-node -r tsconfig-paths/register ./node_modules/.bin/sequelize-cli db:seed:all --config src/config/config.ts",
+    "dev": "cross-env NODE_ENV=development ts-node src/index.ts"
+  },
   "dependencies": {
     "axios": "^1.7.7",
     "cors": "^2.8.5",
     "express": "^4.21.1",
     "pg": "^8.13.0",
     "pg-hstore": "^2.3.4",
+    "reflect-metadata": "^0.2.2",
     "sequelize": "^6.37.4",
+    "sequelize-typescript": "^2.1.6",
     "sqlite3": "^5.1.7"
   },
   "devDependencies": {
     "@types/axios": "^0.14.0",
     "@types/cors": "^2.8.17",
+    "@types/dotenv": "^8.2.0",
     "@types/express": "^5.0.0",
     "@types/node": "^22.7.6",
     "dotenv": "^16.4.5",
     "sequelize-cli": "^6.6.2",
     "ts-node": "^10.9.2",
+    "tsconfig-paths": "^4.2.0",
     "typescript": "^5.6.3"
   }
 }
