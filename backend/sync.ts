@@ -1,4 +1,4 @@
-import sequelize from './src/config/database'; 
+import {sequelize} from './src/config/config'; 
 import User from './src/models/User';
 import Album from './src/models/Album';
 import Photo from './src/models/Photo';
