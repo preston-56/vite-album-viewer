@@ -110,6 +110,6 @@
     "typeRoots": ["./node_modules/@types", "./src/types"]
     /* Skip type checking all .d.ts files. */
   },
-  "include": ["src/**/*.ts"],
+  "include": ["src/**/*.ts", "src/types/**/*"],
   "exclude": ["node_modules"],
 }
