@@ -1,9 +1,9 @@
-import express from 'express';
+import express, {Request, Response} from 'express';
 import axios from 'axios';
 
 const router = express.Router();
 
-router.get('/', async (req, res) => {
+router.get('/', async (req:Request, res:Response) => {
   try {
     const response = await axios.get('https://jsonplaceholder.typicode.com/photos');
     res.json(response.data);
