@@ -14,6 +14,8 @@ import Navbar from "./components/Navbar/Navbar";
 import ErrorBoundary from "./components/Errorboundary/Errorboundary";
 import ProtectedRoute from "./components/features/login/ProtectedRoute/ProtectedRoute";
 import SignUp from "./components/features/signup/SignUp";
+import EditPhoto from "./components/features/editphoto/EditPhoto";
+import NotFound from "./components/features/404/NotFound";
 import "./App.css";
 
 const App: React.FC = () => {
@@ -31,6 +33,9 @@ const App: React.FC = () => {
             element={<ProtectedRoute component={Users} />}/>
           <Route path="/albums/:albumId" element={<Album />} />
           <Route path="/photos/:photoId" element={<Photo />} />
+          <Route path="/edit-photo/:photoId" element={<EditPhoto />} /> 
+          <Route path="*" element={<NotFound />} />
+
         </Routes>
       </ErrorBoundary>
     </Router>
