@@ -30,7 +30,7 @@ const Album: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [totalAlbums, setTotalAlbums] = useState<number>(0);
   const [userId, setUserId] = useState<number>(1);
-  const [userName, setUserName] = useState<string>(""); // State for user name
+  const [userName, setUserName] = useState<string>("");
   const toast = useToast();
   const navigate = useNavigate();
 
@@ -39,14 +39,7 @@ const Album: React.FC = () => {
       if (albumId) {
         try {
           const response = await fetch(
-            `https://jsonplaceholder.typicode.com/photos?albumId=${albumId}`,
-            {
-              mode: "cors", 
-              headers: {
-                "Cross-Origin-Embedder-Policy": "require-corp",
-                "Cross-Origin-Opener-Policy": "same-origin",
-              },
-            }
+            `https://jsonplaceholder.typicode.com/photos?albumId=${albumId}`
           );
           if (!response.ok) {
             throw new Error("Network response was not ok");
@@ -75,7 +68,7 @@ const Album: React.FC = () => {
     const fetchTotalAlbums = async () => {
       if (albumId) {
         const currentAlbumId = parseInt(albumId);
-        setUserId(Math.floor((currentAlbumId - 1) / 10) + 1); // Calculate user ID based on album ID
+        setUserId(Math.floor((currentAlbumId - 1) / 10) + 1);
         try {
           const response = await fetch(`https://jsonplaceholder.typicode.com/albums?userId=${userId}`);
           if (!response.ok) {
@@ -90,7 +83,7 @@ const Album: React.FC = () => {
             throw new Error("Network response was not ok");
           }
           const userData: User = await userResponse.json();
-          setUserName(userData.name); // Set the user name
+          setUserName(userData.name);
         } catch (error) {
           console.error("Error fetching albums or user:", error);
           toast({
@@ -118,6 +111,15 @@ const Album: React.FC = () => {
     );
   }
 
+  // Handle case where no photos are found
+  if (photos.length === 0) {
+    return (
+      <Box textAlign="center" py={10}>
+        <Text>No photos found for this album.</Text>
+      </Box>
+    );
+  }
+
   return (
     <Box p={5}>
       {/* Header with Album Title and User Name */}
@@ -127,7 +129,7 @@ const Album: React.FC = () => {
         </Heading>
         <Button
           colorScheme="blue"
-          onClick={() => navigate("/users")} // Adjust this path according to your routing
+          onClick={() => navigate("/users")}
         >
           Back to Users
         </Button>
