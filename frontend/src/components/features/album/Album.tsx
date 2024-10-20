@@ -137,7 +137,7 @@ const Album: React.FC = () => {
       <SimpleGrid columns={[1, 2, 3]} spacing={5}>
         {photos.map((photo) => (
           <Box key={photo.id} borderWidth="1px" borderRadius="lg" overflow="hidden">
-            <Image src={photo.url} alt={photo.title} />
+            <Image src={photo.url} alt={photo.title} crossOrigin="anonymous" />
             <Box p={3}>
               <Text fontWeight="bold">{photo.title}</Text>
               <Link to={`/edit-photo/${photo.id}`}>
