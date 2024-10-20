@@ -3,27 +3,14 @@
 [build]
   publish = "dist"
   command = "yarn build"
-
-# Set content types for different file extensions
-[[headers]]
-  for = "/*.js"
-  [headers.values]
-    Content-Type = "application/javascript"
-
-[[headers]]
-  for = "/*.css"
-  [headers.values]
-    Content-Type = "text/css"
-
-[[headers]]
-  for = "/*.html"
-  [headers.values]
-    Content-Type = "text/html"
-
+  
 # Set CORS headers
 [[headers]]
   for = "/*"
   [headers.values]
+    Access-Control-Allow-Origin = "*"
+    Access-Control-Allow-Methods = "GET, POST, OPTIONS"
+    Access-Control-Allow-Headers = "Content-Type"
     Cross-Origin-Embedder-Policy = "require-corp"
     Cross-Origin-Opener-Policy = "same-origin"
 
