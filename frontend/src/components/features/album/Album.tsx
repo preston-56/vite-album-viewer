@@ -39,14 +39,11 @@ const Album: React.FC = () => {
     if (!albumId) return;
 
     try {
-      const response = await fetch(
-        `https://api.allorigins.win/get?url=https://jsonplaceholder.typicode.com/photos?albumId=${albumId}`
-      );
+      const response = await fetch(`https://jsonplaceholder.typicode.com/photos?albumId=${albumId}`);
       if (!response.ok) throw new Error("Network response was not ok");
-
-      const data = await response.json();
-      const photosData = JSON.parse(data.contents);
-      setPhotos(photosData);
+      const data: Photo[] = await response.json();
+      setPhotos(data);
+      setLoading(false);
     } catch (error) {
       console.error("Error fetching photos:", error);
       toast({
@@ -56,7 +53,6 @@ const Album: React.FC = () => {
         duration: 3000,
         isClosable: true,
       });
-    } finally {
       setLoading(false);
     }
   };
