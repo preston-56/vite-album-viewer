@@ -1,8 +1,34 @@
+# Netlify configuration file
+
 [build]
-  publish = "dist" 
+  publish = "dist"
   command = "yarn build"
 
+# Set content types for different file extensions
+[[headers]]
+  for = "/*.js"
+  [headers.values]
+    Content-Type = "application/javascript"
+
+[[headers]]
+  for = "/*.css"
+  [headers.values]
+    Content-Type = "text/css"
+
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Content-Type = "text/html"
+
+# Set CORS headers
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Cross-Origin-Embedder-Policy = "require-corp"
+    Cross-Origin-Opener-Policy = "same-origin"
+
+# Redirect all requests to index.html
 [[redirects]]
   from = "/*"
-  to = "/index.html"
+  to = "./index.html"
   status = 200
