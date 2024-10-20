@@ -17,9 +17,9 @@ const Navbar: React.FC = () => {
   return (
     <Box bg="teal.500" padding="1rem">
       <Flex alignItems="center" justify="space-between">
-        <Heading size="md" color="white" marginRight={2}>
-          📸 Photo Gallery
-        </Heading>
+          <Heading size="md" color="white" marginRight={2}>
+            📸 Photo Gallery
+          </Heading>        
         <Flex alignItems="center" gap={2}>
           {isLoggedIn && (
             <>

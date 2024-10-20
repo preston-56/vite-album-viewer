@@ -31,22 +31,22 @@ const Album: React.FC = () => {
   const [totalAlbums, setTotalAlbums] = useState<number>(0);
   const [userId, setUserId] = useState<number>(1);
   const [userName, setUserName] = useState<string>("");
-  
+
   const toast = useToast();
   const navigate = useNavigate();
 
-  // Fetch photos using a proxy to handle CORS
   const fetchPhotos = async () => {
     if (!albumId) return;
 
     try {
       const response = await fetch(
-        `https://jsonplaceholder.typicode.com/photos?albumId=${albumId}`
+        `https://api.allorigins.win/get?url=https://jsonplaceholder.typicode.com/photos?albumId=${albumId}`
       );
       if (!response.ok) throw new Error("Network response was not ok");
-      
+
       const data = await response.json();
-      setPhotos(data);
+      const photosData = JSON.parse(data.contents);
+      setPhotos(photosData);
     } catch (error) {
       console.error("Error fetching photos:", error);
       toast({
@@ -61,7 +61,6 @@ const Album: React.FC = () => {
     }
   };
 
-  // Fetch total albums and user info
   const fetchTotalAlbumsAndUser = async () => {
     if (!albumId) return;
 
@@ -70,16 +69,17 @@ const Album: React.FC = () => {
 
     try {
       const [albumsResponse, userResponse] = await Promise.all([
-        fetch(`https://jsonplaceholder.typicode.com/albums?userId=${userId}`),
-        fetch(`https://jsonplaceholder.typicode.com/users/${userId}`)
+        fetch(`https://api.allorigins.win/get?url=https://jsonplaceholder.typicode.com/albums?userId=${userId}`),
+        fetch(`https://api.allorigins.win/get?url=https://jsonplaceholder.typicode.com/users/${userId}`)
       ]);
 
       if (!albumsResponse.ok || !userResponse.ok) throw new Error("Network response was not ok");
 
       const albumsData = await albumsResponse.json();
-      setTotalAlbums(albumsData.length);
+      const albumsParsed = JSON.parse(albumsData.contents);
+      setTotalAlbums(albumsParsed.length);
 
-      const userData: User = await userResponse.json();
+      const userData: User = JSON.parse((await userResponse.json()).contents);
       setUserName(userData.name);
     } catch (error) {
       console.error("Error fetching albums or user:", error);
@@ -93,14 +93,11 @@ const Album: React.FC = () => {
     }
   };
 
-  // Use effect to fetch photos and album/user data
   useEffect(() => {
     fetchPhotos();
     fetchTotalAlbumsAndUser();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [albumId]);
 
-  // Loading state
   if (loading) {
     return (
       <Box textAlign="center" py={10}>
@@ -112,7 +109,6 @@ const Album: React.FC = () => {
     );
   }
 
-  // Handle case where no photos are found
   if (photos.length === 0) {
     return (
       <Box textAlign="center" py={10}>
@@ -123,7 +119,6 @@ const Album: React.FC = () => {
 
   return (
     <Box p={5}>
-      {/* Header with Album Title and User Name */}
       <Flex justifyContent="space-between" alignItems="center" mb={4}>
         <Heading as="h1" size="lg">
           {userName}'s Album {albumId}
@@ -133,7 +128,6 @@ const Album: React.FC = () => {
         </Button>
       </Flex>
 
-      {/* Photo Grid */}
       <SimpleGrid columns={[1, 2, 3]} spacing={5}>
         {photos.map((photo) => (
           <Box key={photo.id} borderWidth="1px" borderRadius="lg" overflow="hidden">
@@ -148,7 +142,6 @@ const Album: React.FC = () => {
         ))}
       </SimpleGrid>
 
-      {/* Pagination Controls */}
       <Box display="flex" flexDirection="column" alignItems="center" mt={4}>
         <Text mb={2}>Select an Album:</Text>
         <ButtonGroup spacing={2}>
