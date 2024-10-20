@@ -39,7 +39,7 @@ const Album: React.FC = () => {
     if (!albumId) return;
 
     try {
-      const response = await fetch(`/api/fetchPhotos?albumId=${albumId}`);
+      const response = await fetch(`/frontend/netlify/functions/fetchPhotos?albumId=${albumId}`);
       if (!response.ok) throw new Error("Network response was not ok");
       const data: Photo[] = await response.json();
       setPhotos(data);
