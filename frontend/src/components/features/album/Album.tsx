@@ -39,7 +39,14 @@ const Album: React.FC = () => {
       if (albumId) {
         try {
           const response = await fetch(
-            `https://jsonplaceholder.typicode.com/photos?albumId=${albumId}`
+            `https://jsonplaceholder.typicode.com/photos?albumId=${albumId}`,
+            {
+              mode: "cors", 
+              headers: {
+                "Cross-Origin-Embedder-Policy": "require-corp",
+                "Cross-Origin-Opener-Policy": "same-origin",
+              },
+            }
           );
           if (!response.ok) {
             throw new Error("Network response was not ok");
