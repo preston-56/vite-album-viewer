@@ -31,75 +31,76 @@ const Album: React.FC = () => {
   const [totalAlbums, setTotalAlbums] = useState<number>(0);
   const [userId, setUserId] = useState<number>(1);
   const [userName, setUserName] = useState<string>("");
+  
   const toast = useToast();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchPhotos = async () => {
-      if (albumId) {
-        try {
-          const response = await fetch(
-            `https://jsonplaceholder.typicode.com/photos?albumId=${albumId}`
-          );
-          if (!response.ok) {
-            throw new Error("Network response was not ok");
-          }
-          const data = await response.json();
-          setPhotos(data);
-        } catch (error) {
-          console.error("Error fetching photos:", error);
-          toast({
-            title: "Error",
-            description: "Failed to load photos.",
-            status: "error",
-            duration: 3000,
-            isClosable: true,
-          });
-        } finally {
-          setLoading(false);
-        }
-      }
-    };
+  // Fetch photos using a proxy to handle CORS
+  const fetchPhotos = async () => {
+    if (!albumId) return;
 
+    try {
+      const response = await fetch(
+        `https://jsonplaceholder.typicode.com/photos?albumId=${albumId}`
+      );
+      if (!response.ok) throw new Error("Network response was not ok");
+      
+      const data = await response.json();
+      setPhotos(data);
+    } catch (error) {
+      console.error("Error fetching photos:", error);
+      toast({
+        title: "Error",
+        description: "Failed to load photos.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Fetch total albums and user info
+  const fetchTotalAlbumsAndUser = async () => {
+    if (!albumId) return;
+
+    const currentAlbumId = parseInt(albumId);
+    setUserId(Math.floor((currentAlbumId - 1) / 10) + 1);
+
+    try {
+      const [albumsResponse, userResponse] = await Promise.all([
+        fetch(`https://jsonplaceholder.typicode.com/albums?userId=${userId}`),
+        fetch(`https://jsonplaceholder.typicode.com/users/${userId}`)
+      ]);
+
+      if (!albumsResponse.ok || !userResponse.ok) throw new Error("Network response was not ok");
+
+      const albumsData = await albumsResponse.json();
+      setTotalAlbums(albumsData.length);
+
+      const userData: User = await userResponse.json();
+      setUserName(userData.name);
+    } catch (error) {
+      console.error("Error fetching albums or user:", error);
+      toast({
+        title: "Error",
+        description: "Failed to load albums or user.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+  };
+
+  // Use effect to fetch photos and album/user data
+  useEffect(() => {
     fetchPhotos();
-  }, [albumId, toast]);
+    fetchTotalAlbumsAndUser();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [albumId]);
 
-  useEffect(() => {
-    const fetchTotalAlbums = async () => {
-      if (albumId) {
-        const currentAlbumId = parseInt(albumId);
-        setUserId(Math.floor((currentAlbumId - 1) / 10) + 1);
-        try {
-          const response = await fetch(`https://jsonplaceholder.typicode.com/albums?userId=${userId}`);
-          if (!response.ok) {
-            throw new Error("Network response was not ok");
-          }
-          const data = await response.json();
-          setTotalAlbums(data.length);
-
-          // Fetch user information
-          const userResponse = await fetch(`https://jsonplaceholder.typicode.com/users/${userId}`);
-          if (!userResponse.ok) {
-            throw new Error("Network response was not ok");
-          }
-          const userData: User = await userResponse.json();
-          setUserName(userData.name);
-        } catch (error) {
-          console.error("Error fetching albums or user:", error);
-          toast({
-            title: "Error",
-            description: "Failed to load albums or user.",
-            status: "error",
-            duration: 3000,
-            isClosable: true,
-          });
-        }
-      }
-    };
-
-    fetchTotalAlbums();
-  }, [albumId, userId, toast]);
-
+  // Loading state
   if (loading) {
     return (
       <Box textAlign="center" py={10}>
@@ -127,10 +128,7 @@ const Album: React.FC = () => {
         <Heading as="h1" size="lg">
           {userName}'s Album {albumId}
         </Heading>
-        <Button
-          colorScheme="blue"
-          onClick={() => navigate("/users")}
-        >
+        <Button colorScheme="blue" onClick={() => navigate("/users")}>
           Back to Users
         </Button>
       </Flex>
@@ -143,9 +141,7 @@ const Album: React.FC = () => {
             <Box p={3}>
               <Text fontWeight="bold">{photo.title}</Text>
               <Link to={`/edit-photo/${photo.id}`}>
-                <Button mt={2} colorScheme="blue">
-                  Edit Title
-                </Button>
+                <Button mt={2} colorScheme="blue">Edit Title</Button>
               </Link>
             </Box>
           </Box>
