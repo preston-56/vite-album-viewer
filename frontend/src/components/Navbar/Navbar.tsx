@@ -15,11 +15,11 @@ const Navbar: React.FC = () => {
   };
 
   return (
-    <Box bg="teal.500" padding="1rem 60px">
+    <Box bg="teal.500" padding="1rem 20px">
       <Flex alignItems="center" justify="space-between">
         <Link to="/home" style={{ textDecoration: "none" }}>
-          <Heading size="md" color="white" marginRight={2}>
-            📸 Photo Gallery
+          <Heading size="sm" color="white" marginRight={2}>
+          📸 Image Vault
           </Heading>
         </Link>
         <Flex alignItems="center" gap={2}>
