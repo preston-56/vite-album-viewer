@@ -8,18 +8,21 @@ import {
   Input,
   Heading,
   Text,
-  useToast,
+  Flex,
+  useToast
 } from "@chakra-ui/react";
 import { auth } from "./firebaseConfig";
 import {
   signInWithEmailAndPassword,
   GoogleAuthProvider,
-  signInWithPopup,
+  signInWithPopup
 } from "firebase/auth";
+import Loader from "../../Loader/Loader";
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
   const toast = useToast();
   const navigate = useNavigate();
   const isLoggedIn = !!localStorage.getItem("isLoggedIn");
@@ -32,11 +35,13 @@ const Login: React.FC = () => {
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true);
+
     try {
       const userCredential = await signInWithEmailAndPassword(
         auth,
         email,
-        password,
+        password
       );
       if (userCredential.user) {
         localStorage.setItem("isLoggedIn", "true");
@@ -45,7 +50,7 @@ const Login: React.FC = () => {
           description: "You've logged in successfully!",
           status: "success",
           duration: 3000,
-          isClosable: true,
+          isClosable: true
         });
         navigate("/home");
       }
@@ -55,13 +60,17 @@ const Login: React.FC = () => {
         description: "Invalid email or password.",
         status: "error",
         duration: 3000,
-        isClosable: true,
+        isClosable: true
       });
+    } finally {
+      setLoading(false);
     }
   };
 
   const handleGoogleLogin = async () => {
     const provider = new GoogleAuthProvider();
+    setLoading(true);
+
     try {
       const result = await signInWithPopup(auth, provider);
       if (result.user) {
@@ -71,7 +80,7 @@ const Login: React.FC = () => {
           description: "You've logged in successfully with Google!",
           status: "success",
           duration: 3000,
-          isClosable: true,
+          isClosable: true
         });
         navigate("/home");
       }
@@ -82,8 +91,10 @@ const Login: React.FC = () => {
         description: "There was an issue with Google sign-in.",
         status: "error",
         duration: 3000,
-        isClosable: true,
+        isClosable: true
       });
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -100,48 +111,64 @@ const Login: React.FC = () => {
 
   return (
     <Box maxW="md" mx="auto" mt={10} p={6} borderWidth={1} borderRadius="lg">
-      <Heading mb={6}>Login</Heading>
-      <form onSubmit={handleLogin}>
-        <FormControl isRequired mb={4}>
-          <FormLabel htmlFor="email">Email</FormLabel>
-          <Input
-            id="email"
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="Enter your email"
-          />
-        </FormControl>
-        <FormControl isRequired mb={4}>
-          <FormLabel htmlFor="password">Password</FormLabel>
-          <Input
-            id="password"
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="Enter your password"
-          />
-        </FormControl>
-        <Button type="submit" colorScheme="teal" width="full">
-          Login
-        </Button>
-      </form>
-      <Text mt={2}>
-        New here?{" "}
-        <Link to="/signup">
-          <Text as="span" color="blue.500" fontWeight="bold">
-            Sign up!
+      {loading ? (
+        <Flex
+          justifyContent="center"
+          alignItems="center"
+          height="100px"
+          flexDirection="column"
+        >
+          <Loader message="Logging in..." size={40} color="3498db"/>
+          <Text mt={2} textAlign="left" width="100%" pl={4} fontWeight="medium">
+            Please wait while we log you in...
           </Text>
-        </Link>
-      </Text>
-      <Button
-        mt={4}
-        colorScheme="blue"
-        width="full"
-        onClick={handleGoogleLogin}
-      >
-        Continue with Google
-      </Button>
+        </Flex>
+      ) : (
+        <>
+          <Heading mb={6}>Login</Heading>
+          <form onSubmit={handleLogin}>
+            <FormControl isRequired mb={4}>
+              <FormLabel htmlFor="email">Email</FormLabel>
+              <Input
+                id="email"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Enter your email"
+              />
+            </FormControl>
+            <FormControl isRequired mb={4}>
+              <FormLabel htmlFor="password">Password</FormLabel>
+              <Input
+                id="password"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Enter your password"
+              />
+            </FormControl>
+            <Button type="submit" colorScheme="teal" width="full">
+              Login
+            </Button>
+          </form>
+          <Text mt={2}>
+            New here?{" "}
+            <Link to="/signup">
+              <Text as="span" color="blue.500" fontWeight="bold">
+                Sign up!
+              </Text>
+            </Link>
+          </Text>
+          <Button
+            mt={4}
+            colorScheme="blue"
+            width="full"
+            onClick={handleGoogleLogin}
+          >
+            Continue with Google
+          </Button>
+        </>
+      )}
     </Box>
   );
 };
