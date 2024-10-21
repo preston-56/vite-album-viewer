@@ -24,75 +24,74 @@ interface User {
   name: string;
 }
 
+interface Album {
+  userId: number;
+  id: number;
+  title: string;
+}
+
 const Album: React.FC = () => {
   const { albumId } = useParams<{ albumId: string }>();
   const [photos, setPhotos] = useState<Photo[]>([]);
   const [loading, setLoading] = useState(true);
-  const [totalAlbums, setTotalAlbums] = useState<number>(0);
-  const [userId, setUserId] = useState<number>(1);
   const [userName, setUserName] = useState<string>("");
-
+  const [userAlbums, setUserAlbums] = useState<Album[]>([]);
   const toast = useToast();
   const navigate = useNavigate();
 
-  const fetchPhotos = async () => {
-    if (!albumId) return;
-
-    try {
-      const response = await fetch(`/frontend/netlify/functions/fetchPhotos?albumId=${albumId}`);
-      if (!response.ok) throw new Error("Network response was not ok");
-      const data: Photo[] = await response.json();
-      setPhotos(data);
-      setLoading(false);
-    } catch (error) {
-      console.error("Error fetching photos:", error);
-      toast({
-        title: "Error",
-        description: "Failed to load photos.",
-        status: "error",
-        duration: 3000,
-        isClosable: true,
-      });
-      setLoading(false);
-    }
-  };
-
-  const fetchTotalAlbumsAndUser = async () => {
-    if (!albumId) return;
-
-    const currentAlbumId = parseInt(albumId);
-    setUserId(Math.floor((currentAlbumId - 1) / 10) + 1);
-
-    try {
-      const [albumsResponse, userResponse] = await Promise.all([
-        fetch(`https://api.allorigins.win/get?url=https://jsonplaceholder.typicode.com/albums?userId=${userId}`),
-        fetch(`https://api.allorigins.win/get?url=https://jsonplaceholder.typicode.com/users/${userId}`)
-      ]);
-
-      if (!albumsResponse.ok || !userResponse.ok) throw new Error("Network response was not ok");
-
-      const albumsData = await albumsResponse.json();
-      const albumsParsed = JSON.parse(albumsData.contents);
-      setTotalAlbums(albumsParsed.length);
-
-      const userData: User = JSON.parse((await userResponse.json()).contents);
-      setUserName(userData.name);
-    } catch (error) {
-      console.error("Error fetching albums or user:", error);
-      toast({
-        title: "Error",
-        description: "Failed to load albums or user.",
-        status: "error",
-        duration: 3000,
-        isClosable: true,
-      });
-    }
-  };
-
   useEffect(() => {
-    fetchPhotos();
-    fetchTotalAlbumsAndUser();
-  }, [albumId]);
+    const fetchAlbumDetails = async () => {
+      if (albumId) {
+        try {
+          // Fetch album details
+          const albumResponse = await fetch(
+            `https://jsonplaceholder.typicode.com/albums/${albumId}`,
+          );
+          if (!albumResponse.ok) throw new Error("Network response was not ok");
+          const albumData: Album = await albumResponse.json();
+          const userId = albumData.userId;
+
+          // Fetch photos for the album
+          const photoResponse = await fetch(
+            `https://jsonplaceholder.typicode.com/photos?albumId=${albumId}`,
+          );
+          if (!photoResponse.ok) throw new Error("Network response was not ok");
+          const photosData = await photoResponse.json();
+          setPhotos(photosData);
+
+          // Fetch user details
+          const userResponse = await fetch(
+            `https://jsonplaceholder.typicode.com/users/${userId}`,
+          );
+          if (!userResponse.ok) throw new Error("Network response was not ok");
+          const userData: User = await userResponse.json();
+          setUserName(userData.name);
+
+          // Fetch albums for the current user
+          const albumsResponse = await fetch(
+            `https://jsonplaceholder.typicode.com/albums?userId=${userId}`,
+          );
+          if (!albumsResponse.ok)
+            throw new Error("Network response was not ok");
+          const albumsData = await albumsResponse.json();
+          setUserAlbums(albumsData);
+        } catch (error) {
+          console.error("Error fetching data:", error);
+          toast({
+            title: "Error",
+            description: "Failed to load album details.",
+            status: "error",
+            duration: 3000,
+            isClosable: true,
+          });
+        } finally {
+          setLoading(false);
+        }
+      }
+    };
+
+    fetchAlbumDetails();
+  }, [albumId, toast]);
 
   if (loading) {
     return (
@@ -105,19 +104,11 @@ const Album: React.FC = () => {
     );
   }
 
-  if (photos.length === 0) {
-    return (
-      <Box textAlign="center" py={10}>
-        <Text>No photos found for this album.</Text>
-      </Box>
-    );
-  }
-
   return (
     <Box p={5}>
       <Flex justifyContent="space-between" alignItems="center" mb={4}>
-        <Heading as="h1" size="lg">
-          {userName}'s Album {albumId}
+        <Heading as="h4" size="sm">
+          {userName}'s Album Number: {albumId}
         </Heading>
         <Button colorScheme="blue" onClick={() => navigate("/users")}>
           Back to Users
@@ -126,33 +117,38 @@ const Album: React.FC = () => {
 
       <SimpleGrid columns={[1, 2, 3]} spacing={5}>
         {photos.map((photo) => (
-          <Box key={photo.id} borderWidth="1px" borderRadius="lg" overflow="hidden">
-            <Image src={photo.url} alt={photo.title} crossOrigin="anonymous" />
+          <Box
+            key={photo.id}
+            borderWidth="1px"
+            borderRadius="lg"
+            overflow="hidden"
+          >
+            <Image src={photo.url} alt={photo.title} />
             <Box p={3}>
               <Text fontWeight="bold">{photo.title}</Text>
               <Link to={`/edit-photo/${photo.id}`}>
-                <Button mt={2} colorScheme="blue">Edit Title</Button>
+                <Button mt={2} colorScheme="blue">
+                  Edit Title
+                </Button>
               </Link>
             </Box>
           </Box>
         ))}
       </SimpleGrid>
 
+      {/* Pagination Controls */}
       <Box display="flex" flexDirection="column" alignItems="center" mt={4}>
-        <Text mb={2}>Select an Album:</Text>
+        <Text mb={2}>Select Your Album Number:</Text>
         <ButtonGroup spacing={2}>
-          {Array.from({ length: totalAlbums }).map((_, index) => {
-            const albumNumber = index + 1;
-            return (
-              <Button
-                key={albumNumber}
-                onClick={() => navigate(`/albums/${albumNumber}`)}
-                colorScheme={albumId === albumNumber.toString() ? "teal" : "gray"}
-              >
-                {albumNumber}
-              </Button>
-            );
-          })}
+          {userAlbums.map((album) => (
+            <Button
+              key={album.id}
+              onClick={() => navigate(`/albums/${album.id}`)}
+              colorScheme={albumId === album.id.toString() ? "teal" : "gray"}
+            >
+              {album.id}
+            </Button>
+          ))}
         </ButtonGroup>
       </Box>
     </Box>
