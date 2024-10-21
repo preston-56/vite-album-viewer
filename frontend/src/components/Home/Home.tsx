@@ -74,7 +74,7 @@ const Home: React.FC = () => {
   }
 
   return (
-    <Box p={{ base: 4, md: 8 }} mx="auto"  bg="gray.50" minHeight="100vh">
+    <Box padding="1rem" mx={{ base: "20px", md: "auto" }} maxW="800px">
       <Heading as="h4" mb={8} textAlign="center" color="blue.700">
         Users and Albums
       </Heading>
