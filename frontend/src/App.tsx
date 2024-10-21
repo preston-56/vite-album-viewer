@@ -16,6 +16,7 @@ import ProtectedRoute from "./components/features/login/ProtectedRoute/Protected
 import SignUp from "./components/features/signup/SignUp";
 import EditPhoto from "./components/features/editphoto/EditPhoto";
 import NotFound from "./components/features/404/NotFound";
+import UserAlbums from "./components/features/users/UserAlbums";
 import "./App.css";
 
 const App: React.FC = () => {
@@ -28,14 +29,12 @@ const App: React.FC = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/home" element={<ProtectedRoute component={Home} />} />
-          <Route
-            path="/users"
-            element={<ProtectedRoute component={Users} />}/>
-          <Route path="/albums/:albumId" element={<Album />} />
-          <Route path="/photos/:photoId" element={<Photo />} />
-          <Route path="/edit-photo/:photoId" element={<EditPhoto />} /> 
+          <Route path="/users" element={<ProtectedRoute component={Users} />} />
+          <Route path="/albums/:albumId" element={<ProtectedRoute component={Album} />} />
+          <Route path="/users/:userId/albums/" element={<ProtectedRoute component={UserAlbums} />} />
+          <Route path="/photos/:photoId" element={<ProtectedRoute component={Photo} />} />
+          <Route path="/edit-photo/:photoId" element={<ProtectedRoute component={EditPhoto} />} />
           <Route path="*" element={<NotFound />} />
-
         </Routes>
       </ErrorBoundary>
     </Router>
