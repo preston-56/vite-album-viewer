@@ -39,7 +39,7 @@ const Login: React.FC = () => {
         password,
       );
       if (userCredential.user) {
-        localStorage.setItem("isLoggedIn", "true"); 
+        localStorage.setItem("isLoggedIn", "true");
         toast({
           title: "Login successful.",
           description: "You've logged in successfully!",
@@ -126,8 +126,13 @@ const Login: React.FC = () => {
           Login
         </Button>
       </form>
-      <Text mt={4}>
-        Don't have an account? <Link to="/signup">Sign up here</Link>
+      <Text mt={2}>
+        New here?{" "}
+        <Link to="/signup">
+          <Text as="span" color="blue.500" fontWeight="bold">
+            Sign up!
+          </Text>
+        </Link>
       </Text>
       <Button
         mt={4}
@@ -135,7 +140,7 @@ const Login: React.FC = () => {
         width="full"
         onClick={handleGoogleLogin}
       >
-        Login with Google
+        Continue with Google
       </Button>
     </Box>
   );
