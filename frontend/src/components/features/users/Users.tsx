@@ -5,7 +5,7 @@ import {
   Button,
   useToast,
   Flex,
-  SimpleGrid
+  SimpleGrid,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import Loader from "../../Loader/Loader";
@@ -26,10 +26,10 @@ const Users: React.FC = () => {
     const fetchUsers = async () => {
       try {
         const userResponse = await fetch(
-          "https://jsonplaceholder.typicode.com/users"
+          "https://jsonplaceholder.typicode.com/users",
         );
         const albumResponse = await fetch(
-          "https://jsonplaceholder.typicode.com/albums"
+          "https://jsonplaceholder.typicode.com/albums",
         );
 
         if (!userResponse.ok || !albumResponse.ok) {
@@ -43,8 +43,8 @@ const Users: React.FC = () => {
           id: user.id,
           name: user.name,
           albumCount: albumsData.filter(
-            (album: any) => album.userId === user.id
-          ).length
+            (album: any) => album.userId === user.id,
+          ).length,
         }));
 
         setUsers(usersWithAlbumCount);
@@ -55,7 +55,7 @@ const Users: React.FC = () => {
           description: "There was an error fetching the user data.",
           status: "error",
           duration: 5000,
-          isClosable: true
+          isClosable: true,
         });
       } finally {
         setLoading(false);
