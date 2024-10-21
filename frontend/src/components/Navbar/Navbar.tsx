@@ -1,25 +1,18 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Box, Flex, Heading, Button } from "@chakra-ui/react";
-import { auth } from "../features/login/firebaseConfig";
-import { signOut } from "firebase/auth";
+import { useAuth } from "../AuthContext/AuthContext";
+import LogOut from "../features/logout/LogOut";
 
 const Navbar: React.FC = () => {
-  const navigate = useNavigate();
-  const isLoggedIn = !!localStorage.getItem("isLoggedIn");
-
-  const handleLogout = async () => {
-    await signOut(auth);
-    localStorage.removeItem("isLoggedIn");
-    navigate("/login");
-  };
+  const { isLoggedIn } = useAuth();
 
   return (
     <Box bg="teal.500" padding="1rem" mx={{ base: "20px", md: "auto" }} maxW="100%">
       <Flex alignItems="center" justify="space-between">
         <Link to="/home" style={{ textDecoration: "none" }}>
           <Heading size="sm" color="white" marginRight={2}>
-          📸 Vault
+            📸 Vault
           </Heading>
         </Link>
         <Flex alignItems="center" gap={2}>
@@ -33,13 +26,7 @@ const Navbar: React.FC = () => {
               >
                 Users
               </Button>
-              <Button
-                colorScheme="red"
-                variant="outline"
-                onClick={handleLogout}
-              >
-                Logout
-              </Button>
+              <LogOut /> 
             </>
           )}
         </Flex>
