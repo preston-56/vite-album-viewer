@@ -63,7 +63,6 @@ const Home: React.FC = () => {
         height="100vh"
         flexDirection="column"
         textAlign="center"
-        bg="gray.100"
       >
         <Spinner size="xl" thickness="4px" speed="0.65s" color="blue.500" />
         <Text mt={4} fontSize="xl" color="gray.600">
