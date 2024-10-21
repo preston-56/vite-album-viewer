@@ -34,7 +34,6 @@ const SignUp: React.FC = () => {
         duration: 3000,
         isClosable: true,
       });
-      // Optionally redirect to login or home page after sign up
     } catch (error) {
       if ((error as { code?: string; message?: string }).code) {
         toast({
@@ -98,7 +97,12 @@ const SignUp: React.FC = () => {
         </Button>
       </form>
       <Text mt={4} textAlign="center">
-        Already have an account? <Link to="/login">Log in here</Link>
+        Have an account?{" "}
+        <Link to="/login">
+          <Text as="span" color="blue.500" fontWeight="bold">
+            Log in
+          </Text>
+        </Link>
       </Text>
     </Box>
   );
