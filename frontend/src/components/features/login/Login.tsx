@@ -9,6 +9,7 @@ import {
   Heading,
   Text,
   Flex,
+  IconButton,
   useToast,
 } from "@chakra-ui/react";
 import { auth } from "./firebaseConfig";
@@ -17,12 +18,15 @@ import {
   GoogleAuthProvider,
   signInWithPopup,
 } from "firebase/auth";
+
+import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import Loader from "../../Loader/Loader";
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const toast = useToast();
   const navigate = useNavigate();
@@ -139,16 +143,31 @@ const Login: React.FC = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Enter your email"
+                variant="filled"
+                focusBorderColor="teal.500"
               />
             </FormControl>
             <FormControl isRequired mb={4}>
               <FormLabel htmlFor="password">Password</FormLabel>
               <Input
                 id="password"
-                type="password"
+                type={showPassword ? "text" : "password"}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Enter your password"
+                variant="filled"
+                focusBorderColor="teal.500"
+              />
+              <IconButton
+                aria-label={showPassword ? "Hide password" : "Show password"}
+                icon={showPassword ? <ViewOffIcon /> : <ViewIcon />}
+                onClick={() => setShowPassword(!showPassword)}
+                variant="link"
+                mt={2}
+                position="absolute"
+                right={0}
+                bottom={3}
+                mr={3}
               />
             </FormControl>
             <Button type="submit" colorScheme="teal" width="full">
