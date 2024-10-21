@@ -112,10 +112,10 @@ const UserAlbums: React.FC = () => {
   const totalPages = Math.ceil(photos.length / albumsPerPage);
 
   return (
-    <Box p={5}>
+    <Box padding="1rem" mx={{ base: "20px", md: "auto" }} maxW="800px">
       <Flex justifyContent="space-between" alignItems="center" mb={4}>
         <Heading as="h4" size="sm">
-          <Text fontSize="2xl" mb={4}>
+          <Text fontSize="sm" mb={4}>
             {userName}'s Albums
           </Text>
         </Heading>
