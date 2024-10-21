@@ -95,7 +95,7 @@ const Home: React.FC = () => {
                 <Avatar
                   name={user.name}
                   size="md"
-                  mr={4}
+                  mr={2}
                   bg="blue.500"
                   color="white"
                 />
