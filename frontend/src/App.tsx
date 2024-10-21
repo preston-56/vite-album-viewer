@@ -30,10 +30,22 @@ const App: React.FC = () => {
           <Route path="/signup" element={<SignUp />} />
           <Route path="/home" element={<ProtectedRoute component={Home} />} />
           <Route path="/users" element={<ProtectedRoute component={Users} />} />
-          <Route path="/albums/:albumId" element={<ProtectedRoute component={Album} />} />
-          <Route path="/users/:userId/albums/" element={<ProtectedRoute component={UserAlbums} />} />
-          <Route path="/photos/:photoId" element={<ProtectedRoute component={Photo} />} />
-          <Route path="/edit-photo/:photoId" element={<ProtectedRoute component={EditPhoto} />} />
+          <Route
+            path="/albums/:albumId"
+            element={<ProtectedRoute component={Album} />}
+          />
+          <Route
+            path="/users/:userId/albums/"
+            element={<ProtectedRoute component={UserAlbums} />}
+          />
+          <Route
+            path="/photos/:photoId"
+            element={<ProtectedRoute component={Photo} />}
+          />
+          <Route
+            path="/edit-photo/:photoId"
+            element={<ProtectedRoute component={EditPhoto} />}
+          />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </ErrorBoundary>
