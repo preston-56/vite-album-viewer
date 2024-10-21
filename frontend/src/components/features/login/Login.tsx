@@ -118,7 +118,16 @@ const Login: React.FC = () => {
   }
 
   return (
-    <Box maxW="md" mx="auto" mt={10} p={6} borderWidth={1}>
+    <Box  
+    padding="1rem" 
+    mx={{ base: "20px", md: "auto" }} 
+    maxW="800px"
+    mt={10}
+    p={6}
+    borderWidth={1}
+    borderRadius="lg"
+    boxShadow="lg"
+  >
       {loading ? (
        <Box textAlign="center" py={10}>
        <Flex justifyContent="center" alignItems="center">
