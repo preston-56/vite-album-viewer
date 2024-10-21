@@ -18,7 +18,7 @@ import {
   GoogleAuthProvider,
   signInWithPopup,
 } from "firebase/auth";
-
+import { useAuth } from "../../AuthContext/AuthContext";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import Loader from "../../Loader/Loader";
 
@@ -27,21 +27,15 @@ const Login: React.FC = () => {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+  const { isLoggedIn, setIsLoggedIn } = useAuth();
   const toast = useToast();
   const navigate = useNavigate();
 
   /**check login status once on mount**/
   useEffect(() => {
-    const checkLoginStatus = () => {
-      const loggedIn = !!localStorage.getItem("isLoggedIn");
-      setIsLoggedIn(loggedIn);
-      if (loggedIn) {
-        navigate("/home");
-      }
-    };
-    checkLoginStatus();
-  }, [navigate]);
+    const loggedIn = !!localStorage.getItem("isLoggedIn");
+    setIsLoggedIn(loggedIn);
+  }, []);
 
   const handleLogin = async (
     loginMethod: "email" | "google",
@@ -109,11 +103,15 @@ const Login: React.FC = () => {
   if (isLoggedIn) {
     return (
       <Box maxW="md" mx="auto" mt={10} p={6}>
-        <Heading mb={6}>You're already logged in!</Heading>
-        <Text mb={4}>
-          Click <Link to="/home">here</Link> to go to your dashboard.
-        </Text>
-      </Box>
+      <Heading mb={6}>You're already logged in!</Heading>
+      <Text mb={4}>
+        Click{' '}
+        <Link to="/home">
+          <Text as="span" color="teal.500" fontWeight="bold">here</Text>
+        </Link>{' '}
+        to go to your dashboard.
+      </Text>
+    </Box>
     );
   }
 
