@@ -99,7 +99,11 @@ const Home: React.FC = () => {
                   bg="blue.500"
                   color="white"
                 />
-                <VStack align="start" spacing={{ base: 1, md: 2 }} pr={{ base: 3, md: 5 }} >
+                <VStack
+                  align="start"
+                  spacing={{ base: 1, md: 2 }}
+                  pr={{ base: 3, md: 5 }}
+                >
                   <Heading size={{ base: "sm" }} color="blue.400">
                     {user.name}
                   </Heading>
