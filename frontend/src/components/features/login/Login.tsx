@@ -33,20 +33,30 @@ const Login: React.FC = () => {
     }
   }, [isLoggedIn, navigate]);
 
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleLogin = async (
+    loginMethod: "email" | "google",
+    email?: string,
+    password?: string
+  ) => {
     setLoading(true);
-
     try {
-      const userCredential = await signInWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
+      let userCredential;
+
+      if (loginMethod === "email") {
+        userCredential = await signInWithEmailAndPassword(
+          auth,
+          email!,
+          password!
+        );
+      } else {
+        const provider = new GoogleAuthProvider();
+        userCredential = await signInWithPopup(auth, provider);
+      }
+
       if (userCredential.user) {
         localStorage.setItem("isLoggedIn", "true");
         toast({
-          title: "Login successful.",
+          title: `${loginMethod === "email" ? "Login" : "Google Login"} successful.`,
           description: "You've logged in successfully!",
           status: "success",
           duration: 3000,
@@ -55,9 +65,14 @@ const Login: React.FC = () => {
         navigate("/home");
       }
     } catch (error) {
+      const errorMessage =
+        loginMethod === "email"
+          ? "Invalid email or password."
+          : "There was an issue with Google sign-in.";
+      console.error(`${loginMethod} sign-in error: `, error);
       toast({
-        title: "Login failed.",
-        description: "Invalid email or password.",
+        title: `${loginMethod === "email" ? "Login" : "Google Login"} failed.`,
+        description: errorMessage,
         status: "error",
         duration: 3000,
         isClosable: true
@@ -67,35 +82,16 @@ const Login: React.FC = () => {
     }
   };
 
-  const handleGoogleLogin = async () => {
-    const provider = new GoogleAuthProvider();
-    setLoading(true);
+  const handleEmailLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    await handleLogin("email", email, password);
+  };
 
-    try {
-      const result = await signInWithPopup(auth, provider);
-      if (result.user) {
-        localStorage.setItem("isLoggedIn", "true");
-        toast({
-          title: "Google Login successful.",
-          description: "You've logged in successfully with Google!",
-          status: "success",
-          duration: 3000,
-          isClosable: true
-        });
-        navigate("/home");
-      }
-    } catch (error) {
-      console.error("Google sign-in error: ", error);
-      toast({
-        title: "Google Login failed.",
-        description: "There was an issue with Google sign-in.",
-        status: "error",
-        duration: 3000,
-        isClosable: true
-      });
-    } finally {
-      setLoading(false);
+  const handleGoogleLogin = async () => {
+    if (isLoggedIn) {
+      return; // Prevent further action if already logged in
     }
+    await handleLogin("google");
   };
 
   if (isLoggedIn) {
@@ -118,7 +114,7 @@ const Login: React.FC = () => {
           height="100px"
           flexDirection="column"
         >
-          <Loader message="Logging in..." size={40} color="3498db"/>
+          <Loader message="Logging in..." size={40} color="3498db" />
           <Text mt={2} textAlign="left" width="100%" pl={4} fontWeight="medium">
             Please wait while we log you in...
           </Text>
@@ -126,7 +122,7 @@ const Login: React.FC = () => {
       ) : (
         <>
           <Heading mb={6}>Login</Heading>
-          <form onSubmit={handleLogin}>
+          <form onSubmit={handleEmailLogin}>
             <FormControl isRequired mb={4}>
               <FormLabel htmlFor="email">Email</FormLabel>
               <Input
@@ -164,6 +160,7 @@ const Login: React.FC = () => {
             colorScheme="blue"
             width="full"
             onClick={handleGoogleLogin}
+            isLoading={loading}
           >
             Continue with Google
           </Button>
