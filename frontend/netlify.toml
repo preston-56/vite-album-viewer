@@ -3,7 +3,6 @@
 [build]
   publish = "dist"
   command = "yarn build"
-  functions = "/frontend/netlify/functions"
 
 
 # Set CORS headers
@@ -13,9 +12,7 @@
     Access-Control-Allow-Origin = "*"
     Access-Control-Allow-Methods = "GET, POST, OPTIONS"
     Access-Control-Allow-Headers = "Content-Type"
-    Cross-Origin-Embedder-Policy = "require-corp"
-    Cross-Origin-Opener-Policy = "same-origin"
-
+  
 # Redirect all requests to index.html
 [[redirects]]
   from = "/*"
