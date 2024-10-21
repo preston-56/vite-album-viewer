@@ -8,6 +8,9 @@ import {
   Card,
   CardBody,
   Flex,
+  Avatar,
+  VStack,
+  Divider,
 } from "@chakra-ui/react";
 
 interface User {
@@ -30,8 +33,12 @@ const Home: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const userResponse = await fetch("https://jsonplaceholder.typicode.com/users");
-        const albumResponse = await fetch("https://jsonplaceholder.typicode.com/albums");
+        const userResponse = await fetch(
+          "https://jsonplaceholder.typicode.com/users",
+        );
+        const albumResponse = await fetch(
+          "https://jsonplaceholder.typicode.com/albums",
+        );
 
         const usersData = await userResponse.json();
         const albumsData = await albumResponse.json();
@@ -59,7 +66,7 @@ const Home: React.FC = () => {
         bg="gray.100"
       >
         <Spinner size="xl" thickness="4px" speed="0.65s" color="blue.500" />
-        <Text mt={4} fontSize="xl">
+        <Text mt={4} fontSize="xl" color="gray.600">
           Loading users and albums...
         </Text>
       </Flex>
@@ -67,17 +74,42 @@ const Home: React.FC = () => {
   }
 
   return (
-    <Box p={5}>
-      <Heading as="h1" mb={6}>
+    <Box p={8} bg="gray.50" minHeight="100vh">
+      <Heading as="h1" mb={8} textAlign="center" color="blue.700">
         Users and Albums
       </Heading>
-      <SimpleGrid columns={[1, 2, 3]} spacing={5}>
+
+      <SimpleGrid columns={[1, 2, 3]} spacing={8}>
         {users.map((user) => (
-          <Card key={user.id} borderWidth="1px" borderRadius="lg">
+          <Card
+            key={user.id}
+            borderWidth="1px"
+            borderRadius="lg"
+            overflow="hidden"
+            bg="white"
+            shadow="md"
+            _hover={{ transform: "scale(1.05)", transition: "0.3s ease" }}
+          >
             <CardBody>
-              <Heading size="md">{user.name}</Heading>
-              <Text>Email: {user.email}</Text>
-              <Text>
+              <Flex alignItems="center" mb={4} mr={2}>
+                <Avatar
+                  name={user.name}
+                  size="md"
+                  mr={4}
+                  bg="blue.500"
+                  color="white"
+                />
+                <VStack align="start" spacing={{ base: 1, md: 2 }} pr={{ base: 3, md: 5 }} >
+                  <Heading size={{ base: "sm" }} color="blue.400">
+                    {user.name}
+                  </Heading>
+                  <Text color="gray.600" fontSize={{ base: "sm" }} mr={4}>
+                    Email: {user.email}
+                  </Text>
+                </VStack>
+              </Flex>
+              <Divider mb={4} />
+              <Text color="gray.600">
                 Albums:{" "}
                 {albums.filter((album) => album.userId === user.id).length}
               </Text>
