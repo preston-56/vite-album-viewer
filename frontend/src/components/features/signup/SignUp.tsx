@@ -60,8 +60,9 @@ const SignUp: React.FC = () => {
 
   return (
     <Box
-      maxW="md"
-      mx="auto"
+      padding="1rem" 
+      mx={{ base: "20px", md: "auto" }} 
+      maxW="800px"
       mt={10}
       p={6}
       borderWidth={1}
