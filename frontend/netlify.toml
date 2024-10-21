@@ -3,7 +3,9 @@
 [build]
   publish = "dist"
   command = "yarn build"
-  
+  functions = "/frontend/netlify/functions"
+
+
 # Set CORS headers
 [[headers]]
   for = "/*"
