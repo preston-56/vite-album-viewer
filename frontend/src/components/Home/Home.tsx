@@ -29,6 +29,7 @@ const Home: React.FC = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [albums, setAlbums] = useState<Album[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -47,6 +48,7 @@ const Home: React.FC = () => {
         setAlbums(albumsData);
       } catch (error) {
         console.error("Error fetching data:", error);
+        setError("Error fetching data");
       } finally {
         setLoading(false);
       }
@@ -67,6 +69,16 @@ const Home: React.FC = () => {
         <Spinner size="xl" thickness="4px" speed="0.65s" color="blue.500" />
         <Text mt={4} fontSize="xl" color="gray.600">
           Loading users and albums...
+        </Text>
+      </Flex>
+    );
+  }
+
+  if (error) {
+    return (
+      <Flex alignItems="center" justifyContent="center" height="100vh" flexDirection="column" textAlign="center">
+        <Text fontSize="xl" color="red.500">
+          {error} 
         </Text>
       </Flex>
     );
