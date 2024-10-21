@@ -17,9 +17,11 @@ const Navbar: React.FC = () => {
   return (
     <Box bg="teal.500" padding="1rem">
       <Flex alignItems="center" justify="space-between">
+        <Link to="/home" style={{ textDecoration: "none" }}>
           <Heading size="md" color="white" marginRight={2}>
             📸 Photo Gallery
-          </Heading>        
+          </Heading>
+        </Link>
         <Flex alignItems="center" gap={2}>
           {isLoggedIn && (
             <>
