@@ -15,7 +15,7 @@ const Navbar: React.FC = () => {
   };
 
   return (
-    <Box bg="teal.500" padding="1rem 20px">
+    <Box bg="teal.500" padding="1rem" mx={{ base: "20px", md: "auto" }} maxW="100%">
       <Flex alignItems="center" justify="space-between">
         <Link to="/home" style={{ textDecoration: "none" }}>
           <Heading size="sm" color="white" marginRight={2}>
