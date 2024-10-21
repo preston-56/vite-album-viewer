@@ -74,7 +74,7 @@ const EditPhoto: React.FC = () => {
   };
 
   return (
-    <Box p={5}>
+    <Box padding="1rem" mx={{ base: "20px", md: "auto" }} maxW="800px">
       <Heading as="h2" mb={4}>
         Edit Photo Title
       </Heading>
