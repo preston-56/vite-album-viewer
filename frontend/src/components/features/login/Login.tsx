@@ -9,13 +9,13 @@ import {
   Heading,
   Text,
   Flex,
-  useToast
+  useToast,
 } from "@chakra-ui/react";
 import { auth } from "./firebaseConfig";
 import {
   signInWithEmailAndPassword,
   GoogleAuthProvider,
-  signInWithPopup
+  signInWithPopup,
 } from "firebase/auth";
 import Loader from "../../Loader/Loader";
 
@@ -23,20 +23,26 @@ const Login: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const toast = useToast();
   const navigate = useNavigate();
-  const isLoggedIn = !!localStorage.getItem("isLoggedIn");
 
+  /**check login status once on mount**/
   useEffect(() => {
-    if (isLoggedIn) {
-      navigate("/home");
-    }
-  }, [isLoggedIn, navigate]);
+    const checkLoginStatus = () => {
+      const loggedIn = !!localStorage.getItem("isLoggedIn");
+      setIsLoggedIn(loggedIn);
+      if (loggedIn) {
+        navigate("/home");
+      }
+    };
+    checkLoginStatus();
+  }, [navigate]);
 
   const handleLogin = async (
     loginMethod: "email" | "google",
     email?: string,
-    password?: string
+    password?: string,
   ) => {
     setLoading(true);
     try {
@@ -46,7 +52,7 @@ const Login: React.FC = () => {
         userCredential = await signInWithEmailAndPassword(
           auth,
           email!,
-          password!
+          password!,
         );
       } else {
         const provider = new GoogleAuthProvider();
@@ -55,12 +61,14 @@ const Login: React.FC = () => {
 
       if (userCredential.user) {
         localStorage.setItem("isLoggedIn", "true");
+        setIsLoggedIn(true); /*update local state*/
+
         toast({
           title: `${loginMethod === "email" ? "Login" : "Google Login"} successful.`,
           description: "You've logged in successfully!",
           status: "success",
           duration: 3000,
-          isClosable: true
+          isClosable: true,
         });
         navigate("/home");
       }
@@ -75,7 +83,7 @@ const Login: React.FC = () => {
         description: errorMessage,
         status: "error",
         duration: 3000,
-        isClosable: true
+        isClosable: true,
       });
     } finally {
       setLoading(false);
@@ -89,7 +97,7 @@ const Login: React.FC = () => {
 
   const handleGoogleLogin = async () => {
     if (isLoggedIn) {
-      return; // Prevent further action if already logged in
+      return; /**Prevent further action if already logged in**/
     }
     await handleLogin("google");
   };
