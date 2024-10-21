@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Box, Text, VStack, Button, useToast } from "@chakra-ui/react";
-import { Link } from "react-router-dom";
+import { Box, Text, VStack, Button, useToast, Flex } from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
 import Loader from "../../Loader/Loader";
 
 interface User {
@@ -13,12 +13,17 @@ const Users: React.FC = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const toast = useToast();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const userResponse = await fetch("https://jsonplaceholder.typicode.com/users");
-        const albumResponse = await fetch("https://jsonplaceholder.typicode.com/albums");
+        const userResponse = await fetch(
+          "https://jsonplaceholder.typicode.com/users",
+        );
+        const albumResponse = await fetch(
+          "https://jsonplaceholder.typicode.com/albums",
+        );
 
         if (!userResponse.ok || !albumResponse.ok) {
           throw new Error("Network response was not ok");
@@ -56,10 +61,18 @@ const Users: React.FC = () => {
   if (loading) {
     return (
       <Box textAlign="center" py={10}>
-        <Loader message="Loading users, please wait..." />
+        <Flex justifyContent="center" alignItems="center">
+          <Loader message="" size={40} color="3498db" />
+          <Text ml={4}>Loading users, please wait...</Text>
+        </Flex>
       </Box>
     );
   }
+
+  const handleViewAlbums = (userId: number) => {
+    // Navigate to the user's albums using the correct URL format
+    navigate(`/users/${userId}/albums`);
+  };
 
   return (
     <VStack spacing={4} padding={4}>
@@ -73,11 +86,13 @@ const Users: React.FC = () => {
         >
           <Text fontSize="xl">{user.name}</Text>
           <Text fontSize="md">Albums: {user.albumCount}</Text>
-          <Link to={`/albums/${user.id}`}>
-            <Button colorScheme="teal" marginTop={2}>
-              View Albums
-            </Button>
-          </Link>
+          <Button
+            colorScheme="teal"
+            marginTop={2}
+            onClick={() => handleViewAlbums(user.id)}
+          >
+            View Albums
+          </Button>
         </Box>
       ))}
     </VStack>
