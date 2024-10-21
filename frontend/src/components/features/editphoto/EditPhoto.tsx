@@ -28,7 +28,7 @@ const EditPhoto: React.FC = () => {
     const fetchPhoto = async () => {
       try {
         const response = await fetch(
-          `https://jsonplaceholder.typicode.com/photos/${photoId}`
+          `https://jsonplaceholder.typicode.com/photos/${photoId}`,
         );
         if (!response.ok) {
           throw new Error("Network response was not ok");
@@ -53,7 +53,9 @@ const EditPhoto: React.FC = () => {
 
   const handleSave = () => {
     // Simulate saving the title (usually would be a PUT request)
-    setPhoto((prevPhoto) => (prevPhoto ? { ...prevPhoto, title: newTitle } : prevPhoto));
+    setPhoto((prevPhoto) =>
+      prevPhoto ? { ...prevPhoto, title: newTitle } : prevPhoto,
+    );
 
     toast({
       title: "Success",
@@ -62,8 +64,12 @@ const EditPhoto: React.FC = () => {
       duration: 3000,
       isClosable: true,
     });
-
-    // Navigate back to the album after saving
+    /**
+     * This is the main album for each specified user.
+     * The specified user has 10 albums.
+     * Each album displays 50 photos.
+     * Therefore, each specied user has a total of 500 photos for the 10 albums.
+     */
     navigate(`/albums/${photo?.albumId}`);
   };
 
