@@ -118,19 +118,14 @@ const Login: React.FC = () => {
   }
 
   return (
-    <Box maxW="md" mx="auto" mt={10} p={6} borderWidth={1} borderRadius="lg">
+    <Box maxW="md" mx="auto" mt={10} p={6} borderWidth={1}>
       {loading ? (
-        <Flex
-          justifyContent="center"
-          alignItems="center"
-          height="100px"
-          flexDirection="column"
-        >
-          <Loader message="Logging in..." size={40} color="3498db" />
-          <Text mt={2} textAlign="left" width="100%" pl={4} fontWeight="medium">
-            Please wait while we log you in...
-          </Text>
-        </Flex>
+       <Box textAlign="center" py={10}>
+       <Flex justifyContent="center" alignItems="center">
+         <Loader message="" size={40} color="3498db" />
+         <Text ml={4}>Authenticating, please wait...</Text>
+       </Flex>
+     </Box>
       ) : (
         <>
           <Heading mb={6}>Login</Heading>
