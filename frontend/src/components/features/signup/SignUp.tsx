@@ -10,12 +10,16 @@ import {
   Input,
   Heading,
   useToast,
+  IconButton,
   Text,
 } from "@chakra-ui/react";
+
+import {ViewIcon, ViewOffIcon} from '@chakra-ui/icons'
 
 const SignUp: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const toast = useToast();
 
   const handleSignUp = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -84,13 +88,25 @@ const SignUp: React.FC = () => {
           <FormLabel htmlFor="password">Password</FormLabel>
           <Input
             id="password"
-            type="password"
+            type={showPassword ? "text" : "password"}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="Enter your password"
             variant="filled"
             focusBorderColor="teal.500"
           />
+          <IconButton
+                aria-label={showPassword ? "Hide password" : "Show password"}
+                icon={showPassword ? <ViewOffIcon /> : <ViewIcon />}
+                onClick={() => setShowPassword(!showPassword)}
+                variant="link"
+                mt={2}
+                position="absolute"
+                right={0}
+                bottom={3}
+                mr={3}
+              />
+          
         </FormControl>
         <Button type="submit" colorScheme="teal" width="full">
           Sign Up
