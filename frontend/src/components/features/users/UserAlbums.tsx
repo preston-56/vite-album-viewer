@@ -11,6 +11,7 @@ import {
   Image,
 } from "@chakra-ui/react";
 import { useParams, useNavigate, Link } from "react-router-dom";
+import { useAuth } from "../../AuthContext/AuthContext";
 import Loader from "../../Loader/Loader";
 
 interface Album {
@@ -29,6 +30,7 @@ const UserAlbums: React.FC = () => {
   const { userId } = useParams<{ userId: string }>();
   const toast = useToast();
   const navigate = useNavigate();
+  const { isLoggedIn } = useAuth(); 
 
   const [albums, setAlbums] = useState<Album[]>([]);
   const [photos, setPhotos] = useState<Photo[]>([]);
@@ -36,6 +38,24 @@ const UserAlbums: React.FC = () => {
   const [userName, setUserName] = useState<string>("");
   const [currentPage, setCurrentPage] = useState<number>(1);
   const albumsPerPage = 5;
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      toast({
+        title: "You are logged out",
+        description: "Please log in to access this page.",
+        status: "warning",
+        duration: 3000,
+        isClosable: true,
+      });
+      setAlbums([]);
+      setPhotos([]);
+      setLoading(false);
+      return; 
+    }
+
+    fetchUserAndAlbums();
+  }, [isLoggedIn, userId, toast]);
 
   const fetchUserAndAlbums = async () => {
     try {
@@ -85,12 +105,8 @@ const UserAlbums: React.FC = () => {
   };
 
   useEffect(() => {
-    fetchUserAndAlbums();
-  }, [userId]);
-
-  useEffect(() => {
     if (albums.length) {
-      fetchAlbumDetails(albums[0].id); // Fetch details for the first album
+      fetchAlbumDetails(albums[0].id); 
     }
   }, [albums]);
 
