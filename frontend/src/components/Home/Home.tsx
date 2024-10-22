@@ -3,7 +3,6 @@ import {
   Box,
   Heading,
   Text,
-  Spinner,
   SimpleGrid,
   Card,
   CardBody,
@@ -12,6 +11,7 @@ import {
   VStack,
   Divider,
 } from "@chakra-ui/react";
+import Loader from "../Loader/Loader";
 
 interface User {
   id: number;
@@ -66,10 +66,12 @@ const Home: React.FC = () => {
         flexDirection="column"
         textAlign="center"
       >
-        <Spinner size="xl" thickness="4px" speed="0.65s" color="blue.500" />
-        <Text mt={4} fontSize="xl" color="gray.600">
-          Loading users and albums...
-        </Text>
+        <Box textAlign="center" py={10}>
+        <Flex justifyContent="center" alignItems="center">
+          <Loader message="" size={40} color="#3498db" />
+          <Text ml={4}>Loading users and albums....</Text>
+        </Flex>
+      </Box>
       </Flex>
     );
   }
