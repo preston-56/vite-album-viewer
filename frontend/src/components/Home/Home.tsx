@@ -35,10 +35,10 @@ const Home: React.FC = () => {
     const fetchData = async () => {
       try {
         const userResponse = await fetch(
-          "https://jsonplaceholder.typicode.com/users",
+          "https://jsonplaceholder.typicode.com/users"
         );
         const albumResponse = await fetch(
-          "https://jsonplaceholder.typicode.com/albums",
+          "https://jsonplaceholder.typicode.com/albums"
         );
 
         const usersData = await userResponse.json();
@@ -67,20 +67,26 @@ const Home: React.FC = () => {
         textAlign="center"
       >
         <Box textAlign="center" py={10}>
-        <Flex justifyContent="center" alignItems="center">
-          <Loader message="" size={40} color="#3498db" />
-          <Text ml={4}>Loading users and albums....</Text>
-        </Flex>
-      </Box>
+          <Flex justifyContent="center" alignItems="center">
+            <Loader message="" size={40} color="#3498db" />
+            <Text ml={4}>Loading users and albums....</Text>
+          </Flex>
+        </Box>
       </Flex>
     );
   }
 
   if (error) {
     return (
-      <Flex alignItems="center" justifyContent="center" height="100vh" flexDirection="column" textAlign="center">
+      <Flex
+        alignItems="center"
+        justifyContent="center"
+        height="100vh"
+        flexDirection="column"
+        textAlign="center"
+      >
         <Text fontSize="xl" color="red.500">
-          {error} 
+          {error}
         </Text>
       </Flex>
     );
@@ -102,10 +108,10 @@ const Home: React.FC = () => {
             bg="white"
             shadow="md"
             _hover={{ transform: "scale(1.05)", transition: "0.3s ease" }}
-            maxW="400px"
+            maxW="450px" 
           >
             <CardBody>
-              <Flex alignItems="center" mb={4} mr={2}>
+              <Flex alignItems="flex-start" mb={4}>
                 <Avatar
                   name={user.name}
                   size="md"
@@ -117,11 +123,12 @@ const Home: React.FC = () => {
                   align="start"
                   spacing={{ base: 1, md: 2 }}
                   pr={{ base: 3, md: 5 }}
+                  overflow="hidden" 
                 >
                   <Heading size={{ base: "sm" }} color="blue.400">
                     {user.name}
                   </Heading>
-                  <Text color="gray.600" fontSize={{ base: "sm" }} mr={4}>
+                  <Text color="gray.600" fontSize={{ base: "sm" }} isTruncated>
                     Email: {user.email}
                   </Text>
                 </VStack>
