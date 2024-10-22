@@ -61,9 +61,9 @@ describe("Home Component", () => {
     });
 
     expect(screen.getByText("John Doe")).toBeInTheDocument();
-    expect(screen.getByText("Email: john@example.com")).toBeInTheDocument();
+    expect(screen.getByText("john@example.com")).toBeInTheDocument();
     expect(screen.getByText("Jane Smith")).toBeInTheDocument();
-    expect(screen.getByText("Email: jane@example.com")).toBeInTheDocument();
+    expect(screen.getByText("jane@example.com")).toBeInTheDocument();
     expect(screen.getByText("Albums: 2")).toBeInTheDocument();
     expect(screen.getByText("Albums: 1")).toBeInTheDocument();
   });
