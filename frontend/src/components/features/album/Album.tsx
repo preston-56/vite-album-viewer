@@ -57,7 +57,20 @@ const Album: React.FC = () => {
           );
           if (!photoResponse.ok) throw new Error("Network response was not ok");
           const photosData = await photoResponse.json();
-          setPhotos(photosData);
+
+
+
+          // Update the titles from local storage
+          const updatedPhotos = photosData.map((photo: Photo) => {
+            const savedTitle = localStorage.getItem(`photoTitle-${photo.id}`);
+            return {
+              ...photo,
+              title: savedTitle || photo.title 
+            };
+          });
+
+          setPhotos(updatedPhotos);
+
 
           // Fetch user details
           const userResponse = await fetch(
