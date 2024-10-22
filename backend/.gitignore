@@ -5,15 +5,13 @@ venv/
 __pycache__/
 *.py[cod]
 *.pyo
+*.pyc
 
 # Database migrations
 migrations/
 
 # Environment variables
 *.env
-
-# Compiled files
-*.pyc
 
 # Ignore test results and logs
 *.log
