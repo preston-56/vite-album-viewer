@@ -29,3 +29,10 @@ def create_app():
     app.register_blueprint(photo_routes)
 
     return app
+
+if __name__ == "__main__":
+    app = create_app()
+
+    port = int(os.getenv("PORT", 5000))
+
+    app.run(host="0.0.0.0", port=port)
