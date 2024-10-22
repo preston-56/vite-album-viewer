@@ -115,7 +115,6 @@ const EditPhoto: React.FC = () => {
 
 export default EditPhoto;
 
-
 /**
  * Photo Title Editing Implementation with JSONAPI
  * 
