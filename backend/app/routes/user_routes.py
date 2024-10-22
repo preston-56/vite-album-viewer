@@ -27,7 +27,9 @@ def create_user():
 @user_routes.route('/api/users/<int:id>', methods=['PUT'])
 def update_user(id):
     data = request.get_json()
-    user = User.query.get_or_404(id)
+    user = db.session.get(User, id) 
+    if user is None:
+        return jsonify({'error': 'User not found'}), 404 
     user.name = data['name']
     user.username = data['username']
     user.email = data['email']
@@ -36,7 +38,9 @@ def update_user(id):
 
 @user_routes.route('/api/users/<int:id>', methods=['DELETE'])
 def delete_user(id):
-    user = User.query.get_or_404(id)
+    user = db.session.get(User, id)  
+    if user is None:
+        return jsonify({'error': 'User not found'}), 404  
     db.session.delete(user)
     db.session.commit()
     return jsonify({ 'message': 'User deleted' }), 204
