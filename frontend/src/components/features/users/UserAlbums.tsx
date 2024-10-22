@@ -30,7 +30,7 @@ const UserAlbums: React.FC = () => {
   const { userId } = useParams<{ userId: string }>();
   const toast = useToast();
   const navigate = useNavigate();
-  const { isLoggedIn } = useAuth(); 
+  const { isLoggedIn } = useAuth();
 
   const [albums, setAlbums] = useState<Album[]>([]);
   const [photos, setPhotos] = useState<Photo[]>([]);
@@ -51,7 +51,7 @@ const UserAlbums: React.FC = () => {
       setAlbums([]);
       setPhotos([]);
       setLoading(false);
-      return; 
+      return;
     }
 
     fetchUserAndAlbums();
@@ -82,7 +82,7 @@ const UserAlbums: React.FC = () => {
   const fetchAlbumDetails = async (albumId: number) => {
     try {
       const photosResponse = await fetch(
-        `https://jsonplaceholder.typicode.com/photos?albumId=${albumId}`,
+        `https://jsonplaceholder.typicode.com/photos?albumId=${albumId}`
       );
       if (!photosResponse.ok) throw new Error("Network response was not ok");
       const photosData = await photosResponse.json();
@@ -106,7 +106,7 @@ const UserAlbums: React.FC = () => {
 
   useEffect(() => {
     if (albums.length) {
-      fetchAlbumDetails(albums[0].id); 
+      fetchAlbumDetails(albums[0].id);
     }
   }, [albums]);
 
@@ -128,7 +128,7 @@ const UserAlbums: React.FC = () => {
   const totalPages = Math.ceil(photos.length / albumsPerPage);
 
   return (
-    <Box padding="1rem" mx={{ base: "20px", md: "auto" }} maxW="800px">
+    <Box padding="1rem" mx={{ base: "20px", md: "auto" }} maxW="1200px" minWidth="400px"> {/* Increased maxW and added minWidth */}
       <Flex justifyContent="space-between" alignItems="center" mb={4}>
         <Heading as="h4" size="sm">
           <Text fontSize="sm" mb={4}>
@@ -147,9 +147,12 @@ const UserAlbums: React.FC = () => {
             borderWidth="1px"
             borderRadius="lg"
             overflow="hidden"
+            display="flex"
+            flexDirection="column" 
+            alignItems="center" 
           >
-            <Image src={photo.url} alt={photo.title} />
-            <Box p={3}>
+            <Image src={photo.url} alt={photo.title} width="100%" height="auto" /> 
+            <Box p={3} textAlign="center"> 
               <Text fontWeight="bold">{photo.title}</Text>
               <Link to={`/edit-photo/${photo.id}`}>
                 <Button mt={2} colorScheme="blue">
