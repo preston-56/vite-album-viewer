@@ -93,7 +93,7 @@ const Home: React.FC = () => {
   }
 
   return (
-    <Box padding="1rem" mx={{ base: "20px", md: "auto" }} maxW="1000px"> 
+    <Box padding="1rem" mx={{ base: "10px", md: "auto" }} maxW="1000px"> 
       <Heading as="h4" mb={8} textAlign="center" color="blue.700">
         Users and Albums
       </Heading>
