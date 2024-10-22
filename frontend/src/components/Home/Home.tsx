@@ -129,7 +129,7 @@ const Home: React.FC = () => {
                     {user.name}
                   </Heading>
                   <Text color="gray.600" fontSize={{ base: "sm" }} isTruncated>
-                    Email: {user.email}
+                    {user.email}
                   </Text>
                 </VStack>
               </Flex>
