@@ -102,6 +102,7 @@ const Home: React.FC = () => {
             bg="white"
             shadow="md"
             _hover={{ transform: "scale(1.05)", transition: "0.3s ease" }}
+            maxW="400px"
           >
             <CardBody>
               <Flex alignItems="center" mb={4} mr={2}>
