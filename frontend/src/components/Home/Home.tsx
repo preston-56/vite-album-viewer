@@ -62,7 +62,7 @@ const Home: React.FC = () => {
       <Flex
         alignItems="center"
         justifyContent="center"
-        height="100vh"
+        height="20vh"
         flexDirection="column"
         textAlign="center"
       >
