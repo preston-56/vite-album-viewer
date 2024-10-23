@@ -147,7 +147,7 @@ const UserAlbums: React.FC = () => {
     >
       <Flex justifyContent="space-between" alignItems="center" mb={4}>
         <Heading as="h4" size="sm">
-          <Text fontSize="sm" mb={4}>
+          <Text fontSize="sm" mb={4} mt={3}>
             {userName}'s Albums
           </Text>
         </Heading>
