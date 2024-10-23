@@ -35,7 +35,7 @@ const LogOut: React.FC = () => {
   };
 
   return (
-    <Button colorScheme="blue" variant="solid" onClick={handleLogout} size="lg">
+    <Button variant="solid" onClick={handleLogout} size="lg">
       Logout
     </Button>
   );
