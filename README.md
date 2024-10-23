@@ -73,7 +73,7 @@ To setup the project locally, follow these steps:
 
 - This application (frontend) is hosted on [Netlify](https://www.netlify.com/) as a deployment service with a free tier.
 - The deployment is automated through pipeline jobs to ensure seamless updates after checks have been met.
-- The application can be accessed here: [live link](sageauth.netlify.app/home)
+- The application can be accessed here: [live link](https://sageauth.netlify.app/home)
 
 <div style="text-align: center;">
     <h4>Vault Album Viewer</h4>
