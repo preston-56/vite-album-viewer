@@ -69,7 +69,13 @@ const Navbar: React.FC = () => {
           zIndex="999"
         >
           {isLoggedIn && renderUserButtons()}
-          <CloseIcon onClick={onToggle} color="white" boxSize={6} />
+          <CloseIcon 
+           onClick={onToggle} 
+           color="white" 
+           boxSize={4} 
+           marginTop={2} 
+           marginBottom={2}
+           marginLeft={2} />
         </Box>
       )}
     </Box>
