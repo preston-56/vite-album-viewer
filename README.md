@@ -62,7 +62,21 @@ To setup the project locally, follow these steps:
    ```bash
    npm install
    ```
-4. Running the application:
+4. Set Up Firebase Environment Variables:
+   - Make sure to create a `.env` file in the root of your project and add the following variables:
+     ```plaintext
+         VITE_API_KEY=YOUR_API_KEY
+         VITE_AUTH_DOMAIN=YOUR_AUTH_DOMAIN
+         VITE_PROJECT_ID=YOUR_PROJECT_ID
+         VITE_STORAGE_BUCKET=YOUR_STORAGE_BUCKET
+         VITE_MESSAGING_SENDER_ID=YOUR_MESSAGING_SENDER_ID
+         VITE_APP_ID=YOUR_APP_ID
+     ```
+
+   - Replace `YOUR_API_KEY`, `YOUR_AUTH_DOMAIN`, `YOUR_PROJECT_ID`, `YOUR_STORAGE_BUCKET`, `YOUR_MESSAGING_SENDER_ID`, and `YOUR_APP_ID` with the actual values from your Firebase project credentials to enable Firebase services.
+
+
+5. Running the application:
 
    Using Yarn:
    ```bash
