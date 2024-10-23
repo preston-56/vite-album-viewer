@@ -40,7 +40,7 @@ const Navbar: React.FC = () => {
       <Flex alignItems="center" justify="space-between" height="100%">
         <Link to="/home" style={{ textDecoration: "none" }}>
           <Heading size="sm" color="white" marginRight={2}>
-            📸 Vault
+            📸 The Vault Gallery
           </Heading>
         </Link>
 
