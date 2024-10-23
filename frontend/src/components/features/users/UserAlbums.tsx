@@ -143,7 +143,7 @@ const UserAlbums: React.FC = () => {
       padding="1rem"
       mx={{ base: "20px", md: "auto" }}
       maxW="1200px"
-      minWidth="400px"
+      minWidth="200px"
     >
       <Flex justifyContent="space-between" alignItems="center" mb={4}>
         <Heading as="h4" size="sm">
