@@ -136,6 +136,7 @@ const Album: React.FC = () => {
         <Flex
           direction={{ base: "column", md: "row" }}
           alignItems={{ base: "flex-start", md: "center" }}
+          marginTop={2}
         >
           <Heading
             as="h4"
