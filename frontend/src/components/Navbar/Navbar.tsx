@@ -12,7 +12,7 @@ const Navbar: React.FC = () => {
   const renderUserButtons = () => (
     <Flex alignItems="center" gap={2}> 
       <Button
-        colorScheme="orange"
+        colorScheme="blue"
         variant="solid"
         as={Link}
         to="/users"
