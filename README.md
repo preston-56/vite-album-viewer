@@ -41,32 +41,48 @@ To setup the project locally, follow these steps:
    ```bash
    cd vite-album-viewer/frontend
    ```
-3. Install dependencies using Yarn:
+3. Install dependencies:
+   Using Yarn:
 
    ```bash
    yarn install
    ```
-4. Run the application
-
+   Alternatively, using npm:
+   ```bash
+   npm install
+   ```
+4. Running the application:
+   Using Yarn:
    ```bash
    yarn dev
    ```
-
+   Alternatively, using npm:
+   ```bash
+   npm run dev
+   ```
 ## Testing
 - The frontend includes [Vitest](https://vitest.dev/) as the testing framework to run tests for the components and ensure their functionality.
 - These tests are located in the `src/test/` directory.
 - To run the tests for the components(Home and Users), use:
+  Using Yarn:
   ```bash
   yarn test
   ```
-
-
+  Alternatively, using npm:
+  ```bash
+  npm run test
+  ```
 ## Code Quality
 
 - The project includes ESLint for maintaining code quality.
 - To format your code, run:
+  Using Yarn:
   ```bash
   yarn format
+  ```
+  Alternatively, using npm:
+  ```bash
+  npm run format
   ```
 
 ## Deployment
