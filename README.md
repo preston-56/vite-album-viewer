@@ -38,7 +38,7 @@ To setup the project locally, follow these steps:
 2. Navigate to the project directory:
 
    ```bash
-   cd vite-album-viewer
+   cd vite-album-viewer/frontend
    ```
 3. Install dependencies using Yarn:
 
@@ -52,11 +52,13 @@ To setup the project locally, follow these steps:
    ```
 
 ## Testing
-
-- To run the tests for the components, use:
+- The frontend includes [Vitest](https://vitest.dev/) as the testing framework to run tests for the components and ensure their functionality.
+- These tests are located in the `src/test/` directory.
+- To run the tests for the components(Home and Users), use:
   ```bash
   yarn test
   ```
+
 
 ## Code Quality
 
@@ -68,7 +70,7 @@ To setup the project locally, follow these steps:
 
 ## Deployment
 
-- This application (frontend) is hosted on a deployment service with a free tier.
+- This application (frontend) is hosted on [Netlify](https://www.netlify.com/) as a deployment service with a free tier.
 - The deployment is automated through pipeline jobs to ensure seamless updates after checks have been met.
 - The application can be accessed here: [live link](sageauth.netlify.app/home)
 
