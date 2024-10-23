@@ -8,7 +8,18 @@ const Navbar: React.FC = () => {
   const { isLoggedIn } = useAuth();
 
   return (
-    <Box bg="teal.500" padding="1rem" mx={{ base: "20px", md: "auto" }} maxW="100%">
+    <Box bg="teal.500"
+     padding="1rem" 
+     mx={{ base: "0", md: "auto" }}
+     maxW="100%"
+     position="fixed" 
+     top="0" 
+     left="0" 
+     right="0" 
+     zIndex="1000"
+     height="60px"
+     >
+
       <Flex alignItems="center" justify="space-between">
         <Link to="/home" style={{ textDecoration: "none" }}>
           <Heading size="sm" color="white" marginRight={2}>
