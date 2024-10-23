@@ -25,6 +25,7 @@ This application enables users to effortlessly navigate through user information
 To setup the project locally, follow these steps:
 
 1. Clone the repository:
+   
    For **SSH**, use:
 
    ```bash
