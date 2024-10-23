@@ -133,7 +133,7 @@ const Album: React.FC = () => {
   return (
     <Box p={5}>
       <Flex justifyContent="space-between" alignItems="center" mb={4}>
-        <Heading as="h4" size={{ base: "xs", md: "sm" }} noOfLines={1}>
+        <Heading as="h4" size={{ base: "xs", md: "sm" }} noOfLines={1} marginRight={2}>
           {userName}'s Album: {albumId}
         </Heading>
         <Button
