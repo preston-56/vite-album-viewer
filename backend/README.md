@@ -18,8 +18,6 @@ The application is structured into models, routes, and a seeding mechanism to po
 - **requests:** Library for making HTTP requests.
   
 - **dotenv:** For loading environment variables from a .env file.
-- **Firebase:** For enabling Google Sign-In authentication and managing web application configurations, including environment settings for user authentication.
-- **Google Cloud Console:** For managing cloud resources and permissions, allowing the application to interact with Firebase configurations when hosted on Netlify.
   
 ## Setup Instructions
 
