@@ -7,10 +7,10 @@ import {
   Image,
   Button,
   useToast,
-  ButtonGroup,
-  Flex,
+  Flex
 } from "@chakra-ui/react";
 import { useParams, useNavigate, Link } from "react-router-dom";
+import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
 import Loader from "../../Loader/Loader";
 
 interface Photo {
@@ -45,7 +45,7 @@ const Album: React.FC = () => {
         try {
           // Fetch album details
           const albumResponse = await fetch(
-            `https://jsonplaceholder.typicode.com/albums/${albumId}`,
+            `https://jsonplaceholder.typicode.com/albums/${albumId}`
           );
           if (!albumResponse.ok) throw new Error("Network response was not ok");
           const albumData: Album = await albumResponse.json();
@@ -53,28 +53,25 @@ const Album: React.FC = () => {
 
           // Fetch photos for the album
           const photoResponse = await fetch(
-            `https://jsonplaceholder.typicode.com/photos?albumId=${albumId}`,
+            `https://jsonplaceholder.typicode.com/photos?albumId=${albumId}`
           );
           if (!photoResponse.ok) throw new Error("Network response was not ok");
           const photosData = await photoResponse.json();
-
-
 
           // Update the titles from local storage
           const updatedPhotos = photosData.map((photo: Photo) => {
             const savedTitle = localStorage.getItem(`photoTitle-${photo.id}`);
             return {
               ...photo,
-              title: savedTitle || photo.title 
+              title: savedTitle || photo.title
             };
           });
 
           setPhotos(updatedPhotos);
 
-
           // Fetch user details
           const userResponse = await fetch(
-            `https://jsonplaceholder.typicode.com/users/${userId}`,
+            `https://jsonplaceholder.typicode.com/users/${userId}`
           );
           if (!userResponse.ok) throw new Error("Network response was not ok");
           const userData: User = await userResponse.json();
@@ -82,7 +79,7 @@ const Album: React.FC = () => {
 
           // Fetch albums for the current user
           const albumsResponse = await fetch(
-            `https://jsonplaceholder.typicode.com/albums?userId=${userId}`,
+            `https://jsonplaceholder.typicode.com/albums?userId=${userId}`
           );
           if (!albumsResponse.ok)
             throw new Error("Network response was not ok");
@@ -95,7 +92,7 @@ const Album: React.FC = () => {
             description: "Failed to load album details.",
             status: "error",
             duration: 3000,
-            isClosable: true,
+            isClosable: true
           });
         } finally {
           setLoading(false);
@@ -116,6 +113,22 @@ const Album: React.FC = () => {
       </Box>
     );
   }
+
+  const handleNavigateAlbum = (direction: "next" | "prev") => {
+    const currentAlbumIndex = userAlbums.findIndex(
+      (album) => album.id === Number(albumId)
+    );
+    const nextAlbumIndex =
+      direction === "next" ? currentAlbumIndex + 1 : currentAlbumIndex - 1;
+
+    if (nextAlbumIndex >= 0 && nextAlbumIndex < userAlbums.length) {
+      navigate(`/albums/${userAlbums[nextAlbumIndex].id}`);
+    }
+  };
+
+  const currentAlbumIndex = userAlbums.findIndex(
+    (album) => album.id === Number(albumId)
+  );
 
   return (
     <Box p={5}>
@@ -150,20 +163,23 @@ const Album: React.FC = () => {
       </SimpleGrid>
 
       {/* Pagination Controls */}
-      <Box display="flex" flexDirection="column" alignItems="center" mt={4}>
-        <Text mb={2}>Select Your Album Number:</Text>
-        <ButtonGroup spacing={2}>
-          {userAlbums.map((album) => (
-            <Button
-              key={album.id}
-              onClick={() => navigate(`/albums/${album.id}`)}
-              colorScheme={albumId === album.id.toString() ? "teal" : "gray"}
-            >
-              {album.id}
-            </Button>
-          ))}
-        </ButtonGroup>
-      </Box>
+      <Flex justifyContent="space-between" alignItems="center" mt={4}>
+        <Button
+          onClick={() => handleNavigateAlbum("prev")}
+          isDisabled={currentAlbumIndex === 0}
+        >
+          <ChevronLeftIcon />
+        </Button>
+        <Text>
+          Page {currentAlbumIndex + 1} of {userAlbums.length}
+        </Text>
+        <Button
+          onClick={() => handleNavigateAlbum("next")}
+          isDisabled={currentAlbumIndex === userAlbums.length - 1}
+        >
+          <ChevronRightIcon />
+        </Button>
+      </Flex>
     </Box>
   );
 };
