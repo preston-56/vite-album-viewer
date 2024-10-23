@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { auth } from "../login/firebaseConfig";
 import {
   Box,
@@ -21,6 +21,7 @@ const SignUp: React.FC = () => {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const toast = useToast();
+  const navigate = useNavigate();
 
   const validateEmail = (email: string) => {
     const regex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
@@ -54,6 +55,10 @@ const SignUp: React.FC = () => {
         duration: 3000,
         isClosable: true
       });
+
+      setTimeout(()=>{
+        navigate("/login");
+      }, 3000);
     } catch (error) {
       if ((error as { code?: string; message?: string }).code) {
         toast({
