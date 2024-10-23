@@ -63,7 +63,7 @@ To setup the project locally, follow these steps:
    npm install
    ```
 4. Set Up Firebase Environment Variables:
-   - Make sure to create a `.env` file in the root of your project and add the following variables:
+   - Make sure to create a `.env` file in the root of your project(frontend) and add the following variables:
      ```plaintext
          VITE_API_KEY=YOUR_API_KEY
          VITE_AUTH_DOMAIN=YOUR_AUTH_DOMAIN
