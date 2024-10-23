@@ -88,8 +88,23 @@ const Login: React.FC = () => {
     }
   };
 
+  const validateEmail = (email: string) =>{
+    const regex =  /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
+    return regex.test(email);
+  }
+
   const handleEmailLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!validateEmail(email)){
+      toast({
+        title: "Invalid Email",
+        description: "Please enter a valid Gmail address.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+      return;
+    }
     await handleLogin("email", email, password);
   };
 
