@@ -133,10 +133,14 @@ const Album: React.FC = () => {
   return (
     <Box p={5}>
       <Flex justifyContent="space-between" alignItems="center" mb={4}>
-        <Heading as="h4" size="sm">
-          {userName}'s Album Number: {albumId}
+        <Heading as="h4" size={{ base: "xs", md: "sm" }} noOfLines={1}>
+          {userName}'s Album: {albumId}
         </Heading>
-        <Button colorScheme="blue" onClick={() => navigate("/users")}>
+        <Button
+          size={{ base: "sm", md: "md" }}
+          colorScheme="blue"
+          onClick={() => navigate("/users")}
+        >
           Back to Users
         </Button>
       </Flex>
