@@ -18,13 +18,15 @@ The application is structured into models, routes, and a seeding mechanism to po
 - **requests:** Library for making HTTP requests.
   
 - **dotenv:** For loading environment variables from a .env file.
+- **Firebase:** For enabling Google Sign-In authentication and managing web application configurations, including environment settings for user authentication.
+- **Google Cloud Console:** For managing cloud resources and permissions, allowing the application to interact with Firebase configurations when hosted on Netlify.
   
 ## Setup Instructions
 
 1. Clone the repository:
    ```bash
-   git clone <repository-url>
-   cd <project-directory>
+   git clone git@github.com:preston-56/vite-album-viewer.git
+   cd vite-album-viewer/backend
    ```
 
 2. Create a virtual environment:
@@ -108,3 +110,17 @@ flask run
 ```
 NB: Make sure the application context is set up correctly, and the environment variables are loaded.
 
+## Testing
+The application includes a set of tests for the API routes located in the `backend/tests` directory. 
+
+To run these tests using `pytest`, follow these steps:
+
+1. Install test dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+2. Run tests:
+   ```bash
+   pytest 
+   ```
+These tests focus on ensuring the proper functionality of the API routes for users, albums, and photos.
