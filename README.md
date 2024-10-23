@@ -15,6 +15,7 @@ This application enables users to effortlessly navigate through user information
 ## Technologies Used
 
 - **Frontend Framework:** [React](https://react.dev/) with [TypeScript](https://www.typescriptlang.org/)
+- **Build Tool:** [Vite](https://vitejs.dev/)
 - **Styling:** [Chakra UI](https://v2.chakra-ui.com/)
 - **Testing:** [Vitest](https://vitest.dev/) for unit testing components
 - **State Management:** [Context API](https://react.dev/reference/react/useContext) for user authentication and data handling
