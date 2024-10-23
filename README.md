@@ -20,6 +20,16 @@ This application enables users to effortlessly navigate through user information
 - **State Management:** [Context API](https://react.dev/reference/react/useContext) for user authentication and data handling
 - **Linting:** [ESLint](https://eslint.org/) configured to ensure code quality
 
+## Prerequisites
+
+Before setting up the project, make sure you have the following installed:
+
+- **Node.js**: Version 18 or higher is required. You can download it from [Node.js official website](https://nodejs.org/).
+- **Yarn**: The project is built with Yarn, though npm can be used as an alternative. Install Yarn globally using npm:
+  
+  ```bash
+  npm install --global yarn
+
 ## Installation
 
 To setup the project locally, follow these steps:
