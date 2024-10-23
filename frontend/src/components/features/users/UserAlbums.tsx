@@ -7,8 +7,7 @@ import {
   Button,
   useToast,
   Flex,
-  ButtonGroup,
-  Image,
+  Image
 } from "@chakra-ui/react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../../AuthContext/AuthContext";
@@ -46,7 +45,7 @@ const UserAlbums: React.FC = () => {
         description: "Please log in to access this page.",
         status: "warning",
         duration: 3000,
-        isClosable: true,
+        isClosable: true
       });
       setAlbums([]);
       setPhotos([]);
@@ -61,7 +60,7 @@ const UserAlbums: React.FC = () => {
     try {
       const [userResponse, albumsResponse] = await Promise.all([
         fetch(`https://jsonplaceholder.typicode.com/users/${userId}`),
-        fetch(`https://jsonplaceholder.typicode.com/albums?userId=${userId}`),
+        fetch(`https://jsonplaceholder.typicode.com/albums?userId=${userId}`)
       ]);
 
       if (!userResponse.ok || !albumsResponse.ok) {
@@ -100,7 +99,7 @@ const UserAlbums: React.FC = () => {
       description: errorMessage,
       status: "error",
       duration: 3000,
-      isClosable: true,
+      isClosable: true
     });
   };
 
@@ -127,8 +126,25 @@ const UserAlbums: React.FC = () => {
   const currentPhotos = photos.slice(indexOfFirstPhoto, indexOfLastPhoto);
   const totalPages = Math.ceil(photos.length / albumsPerPage);
 
+  const handleNextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const handlePreviousPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
   return (
-    <Box padding="1rem" mx={{ base: "20px", md: "auto" }} maxW="1200px" minWidth="400px">
+    <Box
+      padding="1rem"
+      mx={{ base: "20px", md: "auto" }}
+      maxW="1200px"
+      minWidth="400px"
+    >
       <Flex justifyContent="space-between" alignItems="center" mb={4}>
         <Heading as="h4" size="sm">
           <Text fontSize="sm" mb={4}>
@@ -148,11 +164,16 @@ const UserAlbums: React.FC = () => {
             borderRadius="lg"
             overflow="hidden"
             display="flex"
-            flexDirection="column" 
-            alignItems="center" 
+            flexDirection="column"
+            alignItems="center"
           >
-            <Image src={photo.url} alt={photo.title} width="100%" height="auto" /> 
-            <Box p={3} textAlign="center"> 
+            <Image
+              src={photo.url}
+              alt={photo.title}
+              width="100%"
+              height="auto"
+            />
+            <Box p={3} textAlign="center">
               <Text fontWeight="bold">{photo.title}</Text>
               <Link to={`/edit-photo/${photo.id}`}>
                 <Button mt={2} colorScheme="blue">
@@ -165,18 +186,30 @@ const UserAlbums: React.FC = () => {
       </SimpleGrid>
 
       {/* Pagination Controls */}
-      <Flex justifyContent="center" mt={4}>
-        <ButtonGroup spacing={2}>
-          {Array.from({ length: totalPages }, (_, index) => (
-            <Button
-              key={index + 1}
-              onClick={() => setCurrentPage(index + 1)}
-              colorScheme={currentPage === index + 1 ? "teal" : "gray"}
-            >
-              {index + 1}
-            </Button>
-          ))}
-        </ButtonGroup>
+      <Flex
+        justifyContent="space-between"
+        alignItems="center"
+        mt={4}
+        flexDirection={{ base: "row", sm: "row" }}
+      >
+        {" "}
+        <Button
+          onClick={handlePreviousPage}
+          isDisabled={currentPage === 1}
+          aria-label="Previous Page"
+        >
+          &#9664; {/* Left arrow */}
+        </Button>
+        <Text fontSize={{ base: "sm", sm: "md" }} textAlign="center">
+          Page {currentPage} of {totalPages}
+        </Text>
+        <Button
+          onClick={handleNextPage}
+          isDisabled={currentPage === totalPages}
+          aria-label="Next Page"
+        >
+          &#9654; {/* Right arrow */}
+        </Button>
       </Flex>
     </Box>
   );
