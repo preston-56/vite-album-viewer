@@ -20,6 +20,8 @@ This application enables users to effortlessly navigate through user information
 - **Testing:** [Vitest](https://vitest.dev/) for unit testing components
 - **State Management:** [Context API](https://react.dev/reference/react/useContext) for user authentication and data handling
 - **Linting:** [ESLint](https://eslint.org/) configured to ensure code quality
+- **Firebase:** For enabling Google Sign-In authentication and managing web application configurations, including environment settings for user authentication.
+- **Google Cloud Console:** For managing cloud resources and permissions, allowing the application to interact with Firebase configurations when hosted on Netlify.
 
 ## Prerequisites
 
