@@ -11,10 +11,10 @@ import {
   Heading,
   useToast,
   IconButton,
-  Text,
+  Text
 } from "@chakra-ui/react";
 
-import {ViewIcon, ViewOffIcon} from '@chakra-ui/icons'
+import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 
 const SignUp: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -22,13 +22,29 @@ const SignUp: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const toast = useToast();
 
+  const validateEmail = (email: string) => {
+    const regex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
+    return regex.test(email);
+  };
+
   const handleSignUp = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if (!validateEmail(email)) {
+      toast({
+        title: "Invalid Email",
+        description: "Please enter a valid Gmail address.",
+        status: "error",
+        duration: 3000,
+        isClosable: true
+      });
+      return;
+    }
+
     try {
       const userCredential = await createUserWithEmailAndPassword(
         auth,
         email,
-        password,
+        password
       );
       console.log("User signed up successfully:", userCredential.user);
       toast({
@@ -36,7 +52,7 @@ const SignUp: React.FC = () => {
         description: "You've signed up successfully! You can now log in.",
         status: "success",
         duration: 3000,
-        isClosable: true,
+        isClosable: true
       });
     } catch (error) {
       if ((error as { code?: string; message?: string }).code) {
@@ -45,12 +61,12 @@ const SignUp: React.FC = () => {
           description: (error as { message: string }).message,
           status: "error",
           duration: 3000,
-          isClosable: true,
+          isClosable: true
         });
         console.error(
           "Sign up failed:",
           (error as { code: string }).code,
-          (error as { message: string }).message,
+          (error as { message: string }).message
         );
       } else {
         console.error("An unexpected error occurred:", error);
@@ -60,8 +76,8 @@ const SignUp: React.FC = () => {
 
   return (
     <Box
-      padding="1rem" 
-      mx={{ base: "20px", md: "auto" }} 
+      padding="1rem"
+      mx={{ base: "20px", md: "auto" }}
       maxW="800px"
       mt={10}
       p={6}
@@ -97,17 +113,16 @@ const SignUp: React.FC = () => {
             focusBorderColor="teal.500"
           />
           <IconButton
-                aria-label={showPassword ? "Hide password" : "Show password"}
-                icon={showPassword ? <ViewOffIcon /> : <ViewIcon />}
-                onClick={() => setShowPassword(!showPassword)}
-                variant="link"
-                mt={2}
-                position="absolute"
-                right={0}
-                bottom={3}
-                mr={3}
-              />
-          
+            aria-label={showPassword ? "Hide password" : "Show password"}
+            icon={showPassword ? <ViewOffIcon /> : <ViewIcon />}
+            onClick={() => setShowPassword(!showPassword)}
+            variant="link"
+            mt={2}
+            position="absolute"
+            right={0}
+            bottom={3}
+            mr={3}
+          />
         </FormControl>
         <Button type="submit" colorScheme="teal" width="full">
           Sign Up
