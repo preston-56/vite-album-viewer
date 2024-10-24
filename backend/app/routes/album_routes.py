@@ -1,13 +1,58 @@
 from flask import Blueprint, request, jsonify, abort
 from app.models.album import Album
+from app.models.user import User
+from app.models.photo import Photo
+
 from app import db
 
 album_routes = Blueprint('album_routes', __name__)
 
 @album_routes.route('/api/albums', methods=['GET'])
 def get_albums():
-    albums = Album.query.all()
-    return jsonify([{ 'album_id': album.id, 'user_id': album.user_id, 'title': album.title } for album in albums])
+    user_id = request.args.get('user_id', type=int)
+    
+    albums_query = Album.query
+    if user_id is not None:
+        # Validate if the user exists
+        user = User.query.get(user_id)
+        if user is None:
+            abort(404, description="User not found.")
+        
+        albums_query = albums_query.filter_by(user_id=user_id)
+
+    albums = albums_query.all()
+
+    return jsonify([{
+        'album_id': album.id,
+        'user_id': album.user_id,
+        'title': album.title
+    } for album in albums])
+
+@album_routes.route('/api/albums/<int:id>', methods=['GET'])
+def get_album(id):
+    album = Album.query.get(id)  
+    if album is None:
+        abort(404, description="Album not found.")  
+    
+    return jsonify({
+        'album_id': album.id,
+        'user_id': album.user_id,
+        'title': album.title
+    })
+
+@album_routes.route('/api/albums/<int:album_id>/photos', methods=['GET'])
+def get_photos_by_album(album_id):    
+    photos = Photo.query.filter_by(album_id=album_id).all()
+    
+    if not photos:
+        abort(404, description="No photos found for this album.")
+    
+    return jsonify([{
+        'id': photo.id,
+        'title': photo.title,
+        'url': photo.url,
+        'album_id': photo.album_id
+    } for photo in photos])
 
 @album_routes.route('/api/albums', methods=['POST'])
 def create_album():
@@ -40,13 +85,3 @@ def delete_album(id):
 
     return {'error': 'Album not found'}, 404
 
-@album_routes.route('/api/albums/<int:id>', methods=['GET'])
-def get_album(id):
-    album = db.session.get(Album, id)
-    if album is None:
-        abort(404)
-    return jsonify({
-        'album_id': album.id,
-        'user_id': album.user_id,
-        'title': album.title
-    })
