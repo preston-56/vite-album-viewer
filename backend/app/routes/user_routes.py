@@ -1,14 +1,45 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, abort
 from app.models.user import User
+from app.models.album import Album
 from app import db
 
 user_routes = Blueprint('user_routes', __name__)
 
+
 @user_routes.route('/api/users', methods=['GET'])
 def get_users():
     users = User.query.all()
-    return jsonify([{ 'id': user.id, 'name': user.name, 'username': user.username, 'email': user.email } for user in users])
+    return jsonify([{
+        'id': user.id,
+        'name': user.name,
+        'username': user.username,
+        'email': user.email
+    } for user in users])
 
+@user_routes.route('/api/users/<int:id>', methods=['GET'])
+def get_user(id):
+    user = User.query.get(id)  
+    if user is None:
+        abort(404) 
+    
+    return jsonify({
+        'id': user.id,
+        'name': user.name,
+        'username': user.username,
+        'email': user.email
+    })
+
+@user_routes.route('/api/users/<int:id>/albums', methods=['GET'])
+def get_user_albums(id):
+    user = User.query.get(id)  
+    if user is None:
+        abort(404) 
+
+    albums = Album.query.filter_by(user_id=id).all() 
+    return jsonify([{
+        'album_id': album.id,
+        'title': album.title
+    } for album in albums])
 @user_routes.route('/api/users', methods=['POST'])
 def create_user():
     data = request.get_json()
