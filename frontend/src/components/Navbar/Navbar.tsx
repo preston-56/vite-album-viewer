@@ -21,6 +21,18 @@ const Navbar: React.FC = () => {
     }
   }, [isOpen, onToggle]);
 
+  const handleUserClick = () => {
+    if (isOpen) {
+      onToggle(); 
+    }
+  };
+
+  const handleTitleClick = () => {
+    if (isOpen) {
+      onToggle(); 
+    }
+  };
+
   const renderUserButtons = () => (
     <Flex
       direction={{ base: "column", md: "row" }}
@@ -35,6 +47,7 @@ const Navbar: React.FC = () => {
         to="/users"
         size="lg"
         width="100%"
+        onClick={handleUserClick}
       >
         Users
       </Button>
@@ -72,6 +85,7 @@ const Navbar: React.FC = () => {
         <Link
           to="/home"
           style={{ textDecoration: "none", flex: 1, textAlign: "center" }}
+          onClick={handleTitleClick}
         >
           <Heading size="sm" color="white">
             📸 The Vault Gallery
