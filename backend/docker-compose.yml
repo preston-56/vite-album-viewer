@@ -1,0 +1,36 @@
+services:
+  django:
+    build: .
+    command: flask run --host=0.0.0.0 --port=8000
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - savannah_db
+    networks:
+      - savannah_network
+    environment:
+      - FLASK_APP
+      - FLASK_DEBUG
+      - DATABASE_URL
+
+  savannah_db:
+    image: postgres:13
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - savannah_network
+
+volumes:
+  postgres_data:
+
+networks:
+  savannah_network:
+    driver: bridge
