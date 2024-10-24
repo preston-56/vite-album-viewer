@@ -14,15 +14,20 @@ const Navbar: React.FC = () => {
 
     if (isOpen) {
       timer = setTimeout(() => {
-        onToggle(); 
-      }, 10000); 
+        onToggle();
+      }, 10000);
 
       return () => clearTimeout(timer);
     }
   }, [isOpen, onToggle]);
 
   const renderUserButtons = () => (
-    <Flex direction={{ base: "column", md: "row" }} alignItems="center" gap={2} width="100%">
+    <Flex
+      direction={{ base: "column", md: "row" }}
+      alignItems="center"
+      gap={2}
+      width="100%"
+    >
       <Button
         colorScheme="blue"
         variant="solid"
@@ -33,15 +38,7 @@ const Navbar: React.FC = () => {
       >
         Users
       </Button>
-      <Button
-        onClick={LogOut}
-        colorScheme="orange"
-        variant="solid"
-        size="lg"
-        width="100%"
-      >
-        Log Out
-      </Button>
+      <LogOut />
     </Flex>
   );
 
@@ -72,7 +69,10 @@ const Navbar: React.FC = () => {
         )}
 
         {/* Title closer to Hamburger */}
-        <Link to="/home" style={{ textDecoration: "none", flex: 1, textAlign: 'center' }}>
+        <Link
+          to="/home"
+          style={{ textDecoration: "none", flex: 1, textAlign: "center" }}
+        >
           <Heading size="sm" color="white">
             📸 The Vault Gallery
           </Heading>
