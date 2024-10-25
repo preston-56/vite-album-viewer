@@ -106,6 +106,7 @@ To setup the project locally, follow these steps:
 
 - The project includes ESLint for maintaining code quality.
 - To format your code, run:
+  
   Using Yarn:
   ```bash
   yarn format
