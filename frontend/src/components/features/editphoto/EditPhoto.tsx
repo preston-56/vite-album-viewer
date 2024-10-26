@@ -15,34 +15,36 @@ interface Photo {
   id: number;
   title: string;
   url: string;
-  albumId: number;
+  album_id: number;
+}
+
+interface Album {
+  user_id: number;
+  album_id: number;
+  title: string;
 }
 
 const EditPhoto: React.FC = () => {
-  const { photoId } = useParams<{ photoId: string }>();
+  const { photo_id } = useParams<{ photo_id: string }>();
   const [photo, setPhoto] = useState<Photo | null>(null);
   const [loading, setLoading] = useState(true);
   const [newTitle, setNewTitle] = useState("");
   const toast = useToast();
   const navigate = useNavigate();
 
+  const apiUrl = import.meta.env.VITE_AWS_API_URL;
+
+
   useEffect(() => {
     const fetchPhoto = async () => {
       try {
         const response = await fetch(
-          `https://jsonplaceholder.typicode.com/photos/${photoId}`
+          `${apiUrl}/api/photos/${photo_id}`
         );
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
         const data = await response.json();
-
-        // check for existing title in local storage
-        const savedTitle = localStorage.getItem(`photoTitle-${photoId}`);
-        if (savedTitle) {
-          data.title = savedTitle;
-        }
-
         setPhoto(data);
         setNewTitle(data.title);
       } catch (error) {
@@ -60,31 +62,61 @@ const EditPhoto: React.FC = () => {
     };
 
     fetchPhoto();
-  }, [photoId, toast]);
+  }, [photo_id, toast, apiUrl]);
 
-  const handleSave = () => {
-    // simulate saving title by s storing it in local storage
-    if (photoId) {
-      localStorage.setItem(`photoTitle-${photoId}`, newTitle);
+  const handleSave = async () => {
+    if (photo_id) {
+      try {
+        const response = await fetch(
+          `${apiUrl}/api/photos/${photo_id}/title`,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ title: newTitle })
+          }
+        );
 
-      setPhoto((prevPhoto) =>
-        prevPhoto ? { ...prevPhoto, title: newTitle } : prevPhoto
-      );
+        if (!response.ok) {
+          const errorText = await response.text();
+          throw new Error(
+            `Failed to update photo title: ${response.status}, ${errorText}`
+          );
+        }
 
-      toast({
-        title: "Title Updated!",
-        description: "Photo title updated and saved locally.",
-        status: "success",
-        duration: 3000,
-        isClosable: true
-      });
-      /**
-       * This is the main album for each specified user.
-       * The specified user has 10 albums.
-       * Each album displays 50 photos.
-       * Therefore, each specied user has a total of 500 photos for the 10 albums.
-       */
-      navigate(`/albums/${photo?.albumId}`);
+        // Refetch the updated photo to get album_id
+        const updatedPhoto = await response.json();
+        setPhoto(updatedPhoto);
+
+        toast({
+          title: "Title Updated!",
+          description: "Photo title updated successfully.",
+          status: "success",
+          duration: 3000,
+          isClosable: true
+        });
+
+        // Fetch the album to get user_id
+        const albumResponse = await fetch(
+          `${apiUrl}/api/albums/${updatedPhoto.album_id}`
+        );
+        if (!albumResponse.ok) {
+          throw new Error("Network response was not ok");
+        }
+        const albumData: Album = await albumResponse.json();
+
+        navigate(`/users/${albumData.user_id}/albums/`);
+      } catch (error) {
+        console.error("Error saving photo:", error);
+        toast({
+          title: "Error",
+          description: "Failed to save photo title.",
+          status: "error",
+          duration: 3000,
+          isClosable: true
+        });
+      }
     }
   };
 
@@ -114,25 +146,3 @@ const EditPhoto: React.FC = () => {
 };
 
 export default EditPhoto;
-
-/**
- * Photo Title Editing Implementation with JSONAPI
- * 
- * current approach
- * - using local storage to save the titke after editing.
- * - this change update almost immediately but there are concerns.
- * 
- * concerns: 
- * - local storage data is lost after logging out or clearing the browser.
- * - therefore, this is not a reliable way to keep user data.
- * 
- * What I should do:
- * - Send a PATCH/PUT request to a backend server to save changes.
- * - Use a GET request to fetch and display the updated title afterward.
- * 
- * Benefits of Backend:
- * - Keeps user data consistent across sessions.
- * - Users can access their changes anytime, on any device.
- * - Follows better practices for data management.
- * 
- **/ 
