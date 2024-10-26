@@ -21,15 +21,13 @@ const Navbar: React.FC = () => {
     }
   }, [isOpen, onToggle]);
 
-  const handleUserClick = () => {
-    if (isOpen) {
-      onToggle(); 
-    }
+  const handleMenuClick = () => {
+    onToggle();
   };
 
   const handleTitleClick = () => {
     if (isOpen) {
-      onToggle(); 
+      onToggle();
     }
   };
 
@@ -47,7 +45,7 @@ const Navbar: React.FC = () => {
         to="/users"
         size="lg"
         width="100%"
-        onClick={handleUserClick}
+        onClick={handleMenuClick}
       >
         Users
       </Button>
@@ -70,16 +68,13 @@ const Navbar: React.FC = () => {
     >
       <Flex alignItems="center" justify="space-between" height="100%">
         {/* Hamburger Icon for Mobile */}
-        <Box display={{ base: "flex", md: "none" }} onClick={onToggle}>
-          <HamburgerIcon boxSize={6} color="white" aria-label="Open menu" />
-        </Box>
-
-        {/* Close Icon for Mobile */}
-        {isOpen && (
-          <Box onClick={onToggle} marginLeft={2} marginBottom={0.5}>
+        <Box display={{ base: "flex", md: "none" }} onClick={handleMenuClick}>
+          {!isOpen ? (
+            <HamburgerIcon boxSize={4} color="white" aria-label="Open menu" />
+          ) : (
             <CloseIcon boxSize={4} color="white" aria-label="Close menu" />
-          </Box>
-        )}
+          )}
+        </Box>
 
         {/* Title closer to Hamburger */}
         <Link
