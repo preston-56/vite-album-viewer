@@ -20,5 +20,7 @@ export default defineConfig({
     globals: true,
     environment: 'jsdom',
     },
-
+    define: {
+      'process.env.VITE_AWS_API_URL': JSON.stringify(process.env.VITE_AWS_API_URL)
+    }
 });
