@@ -9,7 +9,7 @@ import {
   Flex,
   Avatar,
   VStack,
-  Divider,
+  Divider
 } from "@chakra-ui/react";
 import Loader from "../Loader/Loader";
 
@@ -22,7 +22,13 @@ interface User {
 interface Album {
   id: number;
   title: string;
-  userId: number;
+  user_id: number;
+}
+
+const apiUrl = import.meta.env.VITE_AWS_API_URL;
+
+if (!apiUrl) {
+  console.error("VITE_AWS_API_URL is not defined");
 }
 
 const Home: React.FC = () => {
@@ -35,10 +41,10 @@ const Home: React.FC = () => {
     const fetchData = async () => {
       try {
         const userResponse = await fetch(
-          "https://jsonplaceholder.typicode.com/users"
+          `${apiUrl}/api/users`
         );
         const albumResponse = await fetch(
-          "https://jsonplaceholder.typicode.com/albums"
+          `${apiUrl}/api/albums`
         );
 
         const usersData = await userResponse.json();
@@ -93,7 +99,7 @@ const Home: React.FC = () => {
   }
 
   return (
-    <Box padding="1rem" mx={{ base: "10px", md: "auto" }} maxW="1000px"> 
+    <Box padding="1rem" mx={{ base: "10px", md: "auto" }} maxW="1000px">
       <Heading as="h4" mb={8} textAlign="center" color="blue.700">
         Users and Albums
       </Heading>
@@ -108,7 +114,7 @@ const Home: React.FC = () => {
             bg="white"
             shadow="md"
             _hover={{ transform: "scale(1.05)", transition: "0.3s ease" }}
-            maxW="450px" 
+            maxW="450px"
           >
             <CardBody>
               <Flex alignItems="flex-start" mb={4}>
@@ -123,7 +129,7 @@ const Home: React.FC = () => {
                   align="start"
                   spacing={{ base: 1, md: 2 }}
                   pr={{ base: 3, md: 5 }}
-                  overflow="hidden" 
+                  overflow="hidden"
                 >
                   <Heading size={{ base: "sm" }} color="blue.400">
                     {user.name}
@@ -136,7 +142,7 @@ const Home: React.FC = () => {
               <Divider mb={4} />
               <Text color="gray.600">
                 Albums:{" "}
-                {albums.filter((album) => album.userId === user.id).length}
+                {albums.filter((album) => album.user_id === user.id).length}
               </Text>
             </CardBody>
           </Card>
