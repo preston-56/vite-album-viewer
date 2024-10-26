@@ -5,7 +5,7 @@ import {
   Button,
   useToast,
   Flex,
-  SimpleGrid,
+  SimpleGrid
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import Loader from "../../Loader/Loader";
@@ -21,15 +21,16 @@ const Users: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const toast = useToast();
   const navigate = useNavigate();
+  const apiUrl = import.meta.env.VITE_AWS_API_URL;
 
   useEffect(() => {
     const fetchUsers = async () => {
       try {
         const userResponse = await fetch(
-          "https://jsonplaceholder.typicode.com/users",
+          `${apiUrl}/api/users`
         );
         const albumResponse = await fetch(
-          "https://jsonplaceholder.typicode.com/albums",
+          `${apiUrl}/api/albums`
         );
 
         if (!userResponse.ok || !albumResponse.ok) {
@@ -43,8 +44,8 @@ const Users: React.FC = () => {
           id: user.id,
           name: user.name,
           albumCount: albumsData.filter(
-            (album: any) => album.userId === user.id,
-          ).length,
+            (album: any) => album.user_id === user.id
+          ).length
         }));
 
         setUsers(usersWithAlbumCount);
@@ -55,7 +56,7 @@ const Users: React.FC = () => {
           description: "There was an error fetching the user data.",
           status: "error",
           duration: 5000,
-          isClosable: true,
+          isClosable: true
         });
       } finally {
         setLoading(false);
@@ -63,7 +64,7 @@ const Users: React.FC = () => {
     };
 
     fetchUsers();
-  }, [toast]);
+  }, [toast, apiUrl]);
 
   if (loading) {
     return (
@@ -76,9 +77,8 @@ const Users: React.FC = () => {
     );
   }
 
-  const handleViewAlbums = (userId: number) => {
-    // Navigate to the user's albums using the correct URL format
-    navigate(`/users/${userId}/albums`);
+  const handleViewAlbums = (user_id: number) => {
+    navigate(`/users/${user_id}/albums`);
   };
 
   return (
