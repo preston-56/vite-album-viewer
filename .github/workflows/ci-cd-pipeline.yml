@@ -13,6 +13,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      # Caching Node.js modules
       - name: Cache Node.js modules
         uses: actions/cache@v3
         with:
@@ -21,21 +22,25 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
 
+      # Setting up Node.js
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '20'
 
+      # Installing frontend dependencies
       - name: Install frontend dependencies
         run: |
-          npm install   # or yarn install
+          npm install # or yarn install
         working-directory: ./frontend 
 
+      # Running frontend tests
       - name: Run frontend tests
         run: |
-          npm test      # or yarn test
+          npm test # or yarn test
         working-directory: ./frontend  
 
+      # Caching Python packages
       - name: Cache Python packages
         uses: actions/cache@v3
         with:
@@ -44,16 +49,19 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pip-
 
+      # Setting up Python
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.8'  
 
+      # Installing backend dependencies
       - name: Install backend dependencies
         run: |
           pip install -r requirements.txt  
         working-directory: ./backend
 
+      # Running backend tests
       - name: Run backend tests
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }} 
@@ -61,14 +69,16 @@ jobs:
           pytest -q --disable-warnings  
         working-directory: ./backend  
 
+      # Deployment step
       - name: Deploy to Production
         if: success()
         run: |
           echo "Deploying to production..."
           # Replace with your actual deployment command
 
+      # Notification on failure
       - name: Notify on Failure
         if: failure()
         run: |
           echo "Build failed! Sending notification..."
-          
+          # You can add an actual notification command here, e.g., sending a message to a Slack channel.
