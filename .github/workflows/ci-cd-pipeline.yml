@@ -40,9 +40,9 @@ jobs:
 
       - name: Run backend tests
         env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}  # Use secrets to access the environment variable
+          DATABASE_URL: ${{ secrets.DATABASE_URL }} 
         run: |
-          pytest
+          pytest -q --disable-warnings  # Use -q for quiet mode to reduce output
         working-directory: ./backend  
 
       - name: Deploy
