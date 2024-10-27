@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify, abort
+from flask import Blueprint, request, jsonify, abort, current_app
 from app.models.album import Album
 from app.models.user import User
 from app.models.photo import Photo
@@ -33,9 +33,10 @@ def get_album(id):
     if not id:
         return jsonify({'error': 'Album ID is undefined'}), 400
     
-    album = Album.query.get(id)
-    if album is None:
-        abort(404, description="Album not found.")
+    with current_app.app_context():
+        album = db.session.get(Album, id)    
+        if album is None:
+         abort(404, description="Album not found.")
     
     return jsonify({
         'album_id': album.id,
