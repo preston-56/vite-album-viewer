@@ -167,6 +167,7 @@ const UserAlbums: React.FC = () => {
         <Button
           onClick={() => handleNavigateAlbum("prev")}
           isDisabled={currentAlbumIndex === 0}
+          aria-label="Previous Album" 
         >
           <ChevronLeftIcon />
         </Button>
@@ -176,6 +177,7 @@ const UserAlbums: React.FC = () => {
         <Button
           onClick={() => handleNavigateAlbum("next")}
           isDisabled={currentAlbumIndex === userAlbums.length - 1}
+          aria-label="Next Album"
         >
           <ChevronRightIcon />
         </Button>
