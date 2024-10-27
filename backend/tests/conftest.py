@@ -17,6 +17,7 @@ def client():
             db.create_all()
             db.session.execute(text("ALTER SEQUENCE users_id_seq RESTART WITH 1"))
             db.session.commit()
+            
         yield client
         with app.app_context():
             db.session.remove()
