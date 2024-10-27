@@ -13,10 +13,8 @@ describe("Users Component", () => {
   });
 
   test("renders loading spinner when fetching data", () => {
-    (fetch as jest.Mock).mockImplementation(() => 
-      new Promise(() => {})
-    );
-
+    (fetch as jest.Mock).mockImplementation(() => new Promise(() => {}));
+    
     render(
       <ChakraProvider>
         <MemoryRouter> 
@@ -34,20 +32,20 @@ describe("Users Component", () => {
       { id: 2, name: "Jane Smith" },
     ];
     const mockAlbums = [
-      { id: 1, userId: 1 },
-      { id: 2, userId: 1 },
-      { id: 3, userId: 2 },
+      { id: 1, user_id: 1 },
+      { id: 2, user_id: 1 },
+      { id: 3, user_id: 2 },
     ];
 
-    // Mock fetch for users
+    // Mock the fetch calls
     (fetch as jest.Mock).mockImplementation((url) => {
-      if (url === "https://jsonplaceholder.typicode.com/users") {
+      if (url.endsWith("/api/users")) {
         return Promise.resolve({
           ok: true,
           json: () => Promise.resolve(mockUsers),
         });
       }
-      if (url === "https://jsonplaceholder.typicode.com/albums") {
+      if (url.endsWith("/api/albums")) {
         return Promise.resolve({
           ok: true,
           json: () => Promise.resolve(mockAlbums),
@@ -64,10 +62,12 @@ describe("Users Component", () => {
       </ChakraProvider>
     );
 
+    // Wait for "Users List" header to confirm users have loaded
     await waitFor(() => {
       expect(screen.getByText("Users List")).toBeInTheDocument();
     });
 
+    // Verify that the mock users and album counts appear correctly
     expect(screen.getByText("John Doe")).toBeInTheDocument();
     expect(screen.getByText("Albums: 2")).toBeInTheDocument();
     expect(screen.getByText("Jane Smith")).toBeInTheDocument();
@@ -90,53 +90,7 @@ describe("Users Component", () => {
       expect(screen.queryByText(/loading users, please wait.../i)).not.toBeInTheDocument();
     });
 
-    //check for error toast or message
+    // Confirm that an error message is displayed
     expect(await screen.findByText(/error fetching users/i)).toBeInTheDocument(); 
   });
-});
-
-
-test("renders users and their album count after fetching data", async () => {
-  const mockUsers = [
-    { id: 1, name: "John Doe" },
-    { id: 2, name: "Jane Smith" },
-  ];
-  const mockAlbums = [
-    { id: 1, userId: 1 },
-    { id: 2, userId: 1 },
-    { id: 3, userId: 2 },
-  ];
-
-  (fetch as jest.Mock).mockImplementation((url) => {
-    if (url === "https://jsonplaceholder.typicode.com/users") {
-      return Promise.resolve({
-        ok: true,
-        json: () => Promise.resolve(mockUsers),
-      });
-    }
-    if (url === "https://jsonplaceholder.typicode.com/albums") {
-      return Promise.resolve({
-        ok: true,
-        json: () => Promise.resolve(mockAlbums),
-      });
-    }
-    return Promise.reject(new Error("not found"));
-  });
-
-  render(
-    <ChakraProvider>
-      <MemoryRouter>
-        <Users />
-      </MemoryRouter>
-    </ChakraProvider>
-  );
-
-  await waitFor(() => {
-    expect(screen.getByText("Users List")).toBeInTheDocument();
-  });
-
-  expect(screen.getByText("John Doe")).toBeInTheDocument();
-  expect(screen.getByText("Albums: 2")).toBeInTheDocument();
-  expect(screen.getByText("Jane Smith")).toBeInTheDocument();
-  expect(screen.getByText("Albums: 1")).toBeInTheDocument();
 });
