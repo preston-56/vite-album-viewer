@@ -66,12 +66,10 @@ jobs:
         working-directory: ./backend
 
       # Running backend tests
-      - name: Run backend tests
-        env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }} 
+      - name: Run tests with pytest
         run: |
           . venv/bin/activate
-          pytest -q --disable-warnings  
+          DATABASE_URL=$DATABASE_URL pytest tests/ --doctest-modules -q --disable-warnings
         working-directory: ./backend  
 
       # Deployment step
