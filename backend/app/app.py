@@ -12,10 +12,10 @@ load_dotenv()
 db = SQLAlchemy()
 migrate = Migrate()
 
-def create_app():    
+def create_app(config_class=Config):    
     app = Flask(__name__) 
     app.config['DEBUG'] = True
-    app.config.from_object('app.config.Config')
+    app.config.from_object(config_class)
     CORS(app, resources={r"/api/*": {"origins": Config.CORS_ALLOWED_ORIGINS}})  
 
     db.init_app(app)
