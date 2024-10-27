@@ -71,3 +71,4 @@ jobs:
         if: failure()
         run: |
           echo "Build failed! Sending notification..."
+          
