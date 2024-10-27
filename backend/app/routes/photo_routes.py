@@ -1,6 +1,5 @@
 from flask import Blueprint, request, jsonify, abort
 from app.models.photo import Photo
-from app.models.album import Album
 from app import db
 
 photo_routes = Blueprint('photo_routes', __name__)
@@ -10,6 +9,7 @@ def get_photo_by_id(id):
     photo = Photo.query.get(id)
     if photo is None:
         abort(404)
+
     return jsonify({
         'id': photo.id,
         'album_id': photo.album_id,
@@ -26,12 +26,12 @@ def get_photos_by_album_id():
             return jsonify({'error': 'No photos found for this album'}), 404
     else:
         photos = Photo.query.all()
-    
-    return jsonify([{ 
-        'id': photo.id, 
-        'album_id': photo.album_id, 
-        'title': photo.title, 
-        'url': photo.url 
+
+    return jsonify([{
+        'id': photo.id,
+        'album_id': photo.album_id,
+        'title': photo.title,
+        'url': photo.url
     } for photo in photos])
 
 @photo_routes.route('/api/photos', methods=['POST'])
@@ -54,7 +54,6 @@ def update_photo(id):
     if photo is None:
         return jsonify({'error': 'Photo not found'}), 404
 
-    # Update fields only if they are provided in the request body
     photo.album_id = data.get('album_id', photo.album_id)
     photo.url = data.get('url', photo.url)
     photo.title = data.get('title', photo.title)
@@ -65,6 +64,7 @@ def update_photo(id):
         'id': photo.id,
         'title': photo.title,
         'album_id': photo.album_id,
+        'url': photo.url
     })
 
 @photo_routes.route('/api/photos/<int:id>', methods=['PATCH'])
@@ -74,12 +74,12 @@ def patch_photo(id):
     if photo is None:
         return jsonify({'error': 'Photo not found'}), 404
     
-    # Update fields only if they are provided in the request body
     photo.title = data.get('title', photo.title)
     photo.album_id = data.get('album_id', photo.album_id)
     photo.url = data.get('url', photo.url)
     
     db.session.commit()
+
     return jsonify({
         'id': photo.id,
         'album_id': photo.album_id,
@@ -101,7 +101,7 @@ def get_photo_by_title(id):
     photo = Photo.query.get(id)
     if photo is None:
         abort(404)
-    
+
     return jsonify({
         'id': photo.id,
         'album_id': photo.album_id,
@@ -126,6 +126,7 @@ def update_photo_by_title(id):
         'id': photo.id,
         'title': photo.title,
         'album_id': photo.album_id,
+        'url': photo.url
     })
 
 @photo_routes.route('/api/photos/<int:id>/title', methods=['PATCH'])
@@ -140,6 +141,7 @@ def patch_photo_by_title(id):
     photo.url = data.get('url', photo.url)
     
     db.session.commit()
+
     return jsonify({
         'id': photo.id,
         'album_id': photo.album_id,
