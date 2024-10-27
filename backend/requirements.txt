@@ -6,3 +6,4 @@ python-dotenv==1.0.1
 psycopg2-binary
 Flask-Cors==5.0.0
 django-cors-headers===4.4.0
+pytest==8.3.3    
