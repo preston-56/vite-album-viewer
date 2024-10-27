@@ -31,7 +31,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.8'  # or your preferred version
+          python-version: '3.8'  
 
       - name: Install backend dependencies
         run: |
@@ -40,7 +40,7 @@ jobs:
 
       - name: Run backend tests
         env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }} 
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}  # Use secrets to access the environment variable
         run: |
           pytest
         working-directory: ./backend  
