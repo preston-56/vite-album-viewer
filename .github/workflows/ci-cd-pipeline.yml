@@ -18,18 +18,32 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Install dependencies
+      - name: Install frontend dependencies
         run: |
           npm install   # or yarn install
         working-directory: ./frontend 
 
-      - name: Run tests
+      - name: Run frontend tests
         run: |
           npm test      # or yarn test
         working-directory: ./frontend  
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.8'  # or your preferred version
+
+      - name: Install backend dependencies
+        run: |
+          pip install -r backend/requirements.txt
+        working-directory: ./backend
+
+      - name: Run backend tests
+        run: |
+          pytest
+        working-directory: ./backend  
 
       - name: Deploy
         if: success()
         run: |
           echo "Deploying to production..."
-          # actual deployment commands, e.g., rsync, scp, or any deployment script
