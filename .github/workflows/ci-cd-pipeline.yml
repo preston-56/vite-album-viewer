@@ -38,10 +38,6 @@ jobs:
           pip install -r requirements.txt  
         working-directory: ./backend
 
-      - name: Set environment variables
-        run: |
-          echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> $GITHUB_ENV
-
       - name: Run backend tests
         run: |
           pytest
