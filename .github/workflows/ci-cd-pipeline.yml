@@ -65,11 +65,24 @@ jobs:
           pip install -r requirements.txt  
         working-directory: ./backend
 
+      # Setting up DATABASE_URL from secrets
+      - name: Set up DATABASE_URL
+        run: echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> $GITHUB_ENV
+
+      # Debugging step to check DATABASE_URL
+      - name: Check DATABASE_URL
+        run: |
+          if [ -z "$DATABASE_URL" ]; then
+            echo "DATABASE_URL is not set!"
+          else
+            echo "DATABASE_URL is set."
+          fi
+
       # Running backend tests
       - name: Run tests with pytest
         run: |
           . venv/bin/activate
-          DATABASE_URL=$DATABASE_URL pytest tests/ --doctest-modules -q --disable-warnings
+          pytest tests/ --doctest-modules -q --disable-warnings
         working-directory: ./backend  
 
       # Deployment step
