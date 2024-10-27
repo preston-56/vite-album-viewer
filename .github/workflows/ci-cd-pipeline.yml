@@ -39,6 +39,8 @@ jobs:
         working-directory: ./backend
 
       - name: Run backend tests
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }} 
         run: |
           pytest
         working-directory: ./backend  
