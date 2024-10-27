@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify, abort
+from flask import Blueprint, request, jsonify, abort, current_app
 from app.models.photo import Photo
 from app import db
 
@@ -6,9 +6,10 @@ photo_routes = Blueprint('photo_routes', __name__)
 
 @photo_routes.route('/api/photos/<int:id>', methods=['GET'])
 def get_photo_by_id(id):
-    photo = Photo.query.get(id)
-    if photo is None:
-        abort(404)
+    with current_app.app_context():
+        photo = db.session.get(Photo, id)    
+        if photo is None:
+         abort(404)
 
     return jsonify({
         'id': photo.id,
