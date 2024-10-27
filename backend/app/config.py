@@ -6,7 +6,7 @@ class Config:
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     CORS_ALLOWED_ORIGINS = [
-        "http://localhost:5173"  
+        "*"  
     ]
 
 class DevelopmentConfig(Config):
