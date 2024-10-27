@@ -1,6 +1,9 @@
 import warnings
 import pytest
 from app import create_app, db
+from dotenv import load_dotenv
+
+load_dotenv()
 
 @pytest.fixture
 def client():
