@@ -13,6 +13,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Cache Node.js modules
+        uses: actions/cache@v3
+        with:
+          path: ./frontend/node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('./frontend/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
@@ -28,6 +36,14 @@ jobs:
           npm test      # or yarn test
         working-directory: ./frontend  
 
+      - name: Cache Python packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('./backend/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
@@ -42,10 +58,16 @@ jobs:
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }} 
         run: |
-          pytest -q --disable-warnings  # Use -q for quiet mode to reduce output
+          pytest -q --disable-warnings  
         working-directory: ./backend  
 
-      - name: Deploy
+      - name: Deploy to Production
         if: success()
         run: |
           echo "Deploying to production..."
+          # Replace with your actual deployment command
+
+      - name: Notify on Failure
+        if: failure()
+        run: |
+          echo "Build failed! Sending notification..."
