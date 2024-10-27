@@ -88,4 +88,3 @@ def delete_album(id):
         return '', 204
 
     return {'error': 'Album not found'}, 404
-
