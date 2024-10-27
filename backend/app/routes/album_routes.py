@@ -30,9 +30,12 @@ def get_albums():
 
 @album_routes.route('/api/albums/<int:id>', methods=['GET'])
 def get_album(id):
-    album = Album.query.get(id)  
+    if not id:
+        return jsonify({'error': 'Album ID is undefined'}), 400
+    
+    album = Album.query.get(id)
     if album is None:
-        abort(404, description="Album not found.")  
+        abort(404, description="Album not found.")
     
     return jsonify({
         'album_id': album.id,
