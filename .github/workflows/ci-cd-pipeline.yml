@@ -30,14 +30,12 @@ jobs:
 
       # Installing frontend dependencies
       - name: Install frontend dependencies
-        run: |
-          npm install # or yarn install
+        run: npm install # or yarn install
         working-directory: ./frontend 
 
       # Running frontend tests
       - name: Run frontend tests
-        run: |
-          npm test # or yarn test
+        run: npm test # or yarn test
         working-directory: ./frontend  
 
       # Caching Python packages
@@ -55,9 +53,15 @@ jobs:
         with:
           python-version: '3.8'  
 
-      # Installing backend dependencies
+      # Creating virtual environment
+      - name: Create Virtual Environment
+        run: python3 -m venv venv
+        working-directory: ./backend
+
+      # Activating the virtual environment and installing backend dependencies
       - name: Install backend dependencies
         run: |
+          . venv/bin/activate
           pip install -r requirements.txt  
         working-directory: ./backend
 
@@ -66,6 +70,7 @@ jobs:
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }} 
         run: |
+          . venv/bin/activate
           pytest -q --disable-warnings  
         working-directory: ./backend  
 
@@ -74,11 +79,9 @@ jobs:
         if: success()
         run: |
           echo "Deploying to production..."
-          # Replace with your actual deployment command
 
       # Notification on failure
       - name: Notify on Failure
         if: failure()
         run: |
           echo "Build failed! Sending notification..."
-          # You can add an actual notification command here, e.g., sending a message to a Slack channel.
