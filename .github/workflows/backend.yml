@@ -28,28 +28,19 @@ jobs:
         with:
           python-version: '3.8'  
 
-      # Creating virtual environment
-      - name: Create Virtual Environment
-        run: python3 -m venv venv
-        working-directory: ./backend
-
-      # Activating the virtual environment and installing backend dependencies
-      - name: Install backend dependencies
+      # Creating and activating virtual environment, installing dependencies
+      - name: Set up and install dependencies
         run: |
-          source venv/bin/activate
+          python3 -m venv venv
+          . venv/bin/activate
           pip install -r requirements.txt  
         working-directory: ./backend
 
-      # Setting up DATABASE_URL from secrets
-      - name: Set up DATABASE_URL
+      # Set up DATABASE_URL from secrets and verify
+      - name: Verify DATABASE_URL
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
-        run: echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> $GITHUB_ENV
-
-      # Debugging step to check DATABASE_URL
-      - name: Check DATABASE_URL
         run: |
-          echo "Checking DATABASE_URL..."
           if [ -z "$DATABASE_URL" ]; then
             echo "DATABASE_URL is not set!"
             exit 1
@@ -57,20 +48,22 @@ jobs:
             echo "DATABASE_URL is set."
           fi
 
-      # Running backend tests
+      # Run backend tests
       - name: Run tests with pytest
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
         run: |
-          source venv/bin/activate
+          . venv/bin/activate
           pytest tests/ --doctest-modules -q --disable-warnings
         working-directory: ./backend  
 
-      # Deployment step (only if all tests pass)
+      # Deploy to Production if tests pass
       - name: Deploy to Production
         if: ${{ success() }}
         run: |
           echo "Deploying to production..."
 
-      # Notification on failure
+      # Notify on failure
       - name: Notify on Failure
         if: ${{ failure() }}
         run: |
