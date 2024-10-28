@@ -8,25 +8,12 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    services:
-      postgres:
-        image: postgres:13
-        env:
-          POSTGRES_USER: ${{ secrets.DB_USER }}
-          POSTGRES_PASSWORD: ${{ secrets.DB_PASSWORD }}
-          POSTGRES_DB: ${{ secrets.DB_NAME }}
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd="pg_isready -U ${{ secrets.DB_USER }}"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=5
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      # Caching Python packages
       - name: Cache Python packages
         uses: actions/cache@v3
         with:
@@ -35,22 +22,35 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pip-
 
+      # Setting up Python
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.8'  
 
-      - name: Set up and install dependencies
+      # Creating virtual environment
+      - name: Create Virtual Environment
+        run: python3 -m venv venv
+        working-directory: ./backend
+
+      # Activate virtual environment and instal backend dependencies
+      - name: Install backend dependencies
         run: |
-          python3 -m venv venv
-          . venv/bin/activate
+          source venv/bin/activate
           pip install -r requirements.txt  
         working-directory: ./backend
 
-      - name: Verify DATABASE_URL
+      # Set up DATABASE_URL securely
+      - name: Set up DATABASE_URL
+        run: echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> $GITHUB_ENV
+        shell: bash
         env:
-          DATABASE_URL: "postgresql://${{ secrets.DB_USER }}:${{ secrets.DB_PASSWORD }}@${{ secrets.DB_HOST }}:5432/${{ secrets.DB_NAME }}"
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+
+      # Verify DATABASE_URL is set
+      - name: Check DATABASE_URL
         run: |
+          echo "Checking DATABASE_URL..."
           if [ -z "$DATABASE_URL" ]; then
             echo "DATABASE_URL is not set!"
             exit 1
@@ -58,22 +58,21 @@ jobs:
             echo "DATABASE_URL is set."
           fi
 
-      - name: Run backend tests
-        env:
-          DATABASE_URL: "postgresql://${{ secrets.DB_USER }}:${{ secrets.DB_PASSWORD }}@${{ secrets.DB_HOST }}:5432/${{ secrets.DB_NAME }}"
+      # Running backend tests
+      - name: Run tests with pytest
         run: |
-          . venv/bin/activate
+          source venv/bin/activate
           pytest tests/ --doctest-modules -q --disable-warnings
         working-directory: ./backend  
 
+      # Deployment step 
       - name: Deploy to Production
         if: ${{ success() }}
         run: |
           echo "Deploying to production..."
 
+      # Notification on failure
       - name: Notify on Failure
         if: ${{ failure() }}
         run: |
           echo "Build failed! Sending notification..."
-
-          
