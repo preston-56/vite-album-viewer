@@ -6,7 +6,9 @@ import {
   FormControl,
   FormLabel,
   Heading,
-  useToast
+  useToast,
+  Text,
+  Flex
 } from "@chakra-ui/react";
 import { useParams, useNavigate } from "react-router-dom";
 import Loader from "../../Loader/Loader";
@@ -34,13 +36,10 @@ const EditPhoto: React.FC = () => {
 
   const apiUrl = import.meta.env.VITE_AWS_API_URL;
 
-
   useEffect(() => {
     const fetchPhoto = async () => {
       try {
-        const response = await fetch(
-          `${apiUrl}/api/photos/${photo_id}`
-        );
+        const response = await fetch(`${apiUrl}/api/photos/${photo_id}`);
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
@@ -67,16 +66,13 @@ const EditPhoto: React.FC = () => {
   const handleSave = async () => {
     if (photo_id) {
       try {
-        const response = await fetch(
-          `${apiUrl}/api/photos/${photo_id}/title`,
-          {
-            method: "PUT",
-            headers: {
-              "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ title: newTitle })
-          }
-        );
+        const response = await fetch(`${apiUrl}/api/photos/${photo_id}/title`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ title: newTitle })
+        });
 
         if (!response.ok) {
           const errorText = await response.text();
@@ -126,7 +122,12 @@ const EditPhoto: React.FC = () => {
         Edit Photo Title
       </Heading>
       {loading ? (
-        <Loader />
+        <Box textAlign="center" py={10}>
+          <Flex justifyContent="center" alignItems="center">
+            <Loader message="" size={40} color="3498db" />
+            <Text ml={4}>loading...</Text>
+          </Flex>
+        </Box>
       ) : photo ? (
         <FormControl>
           <FormLabel>Photo Title</FormLabel>
