@@ -83,7 +83,7 @@ const Navbar: React.FC = () => {
           onClick={handleTitleClick}
         >
           <Heading size="sm" color="white">
-            📸 The Vault Gallery
+            The Vault Gallery
           </Heading>
         </Link>
 
