@@ -113,19 +113,23 @@ NB: Make sure the application context is set up correctly, and the environment v
 
 To build and run the application using Docker, follow these steps:
 
-  1. Build and run the Docker containers:
+  1. **Remove existing migrations**: To ensure a clean setup, delete any previous migrations by running:
+      ```bash
+      rm -rf migrations
+      ```
+  2. Build and run the Docker containers:
      ```bash
      docker-compose up --build
      ```
-  This command will:
-  - Build the application's docker image.
-  - Start the application and the postgres database.
+      This command will:
+      - Build the application's docker image.
+      - Start the application and the postgres database.
 
-  2. **Runnig in Detached Mode**: To run the application in detached mode, use the `-d` flag:
+  3. **Runnig in Detached Mode**: To run the application in detached mode, use the `-d` flag:
      ```bash
      docker-compose up -d
      ```
-  3. **Stopping the Containers**: To stop and remove the containers and associated volumes, run:
+  4. **Stopping the Containers**: To stop and remove the containers and associated volumes, run:
      ```bash
      docker-compose down -v
      ```
