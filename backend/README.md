@@ -17,7 +17,11 @@ The application is structured into models, routes, and a seeding mechanism to po
   
 - **requests:** Library for making HTTP requests.
   
-- **dotenv:** For loading environment variables from a .env file.
+- **dotenv:** For loading environment variables from a `.env` file.
+- **Docker:** Containerization platform to simplify application deployment and environment consistency.
+- **AWS**: Deploying the application to the cloud.
+- **Zaptor DNS:** Enables certificate functionality for mobile browsers.
+
   
 ## Setup Instructions
 
