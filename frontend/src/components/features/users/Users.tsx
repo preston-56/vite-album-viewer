@@ -70,7 +70,7 @@ const Users: React.FC = () => {
     return (
       <Box textAlign="center" py={10}>
         <Flex justifyContent="center" alignItems="center">
-          <Loader message="" size={40} color="3498db" />
+          <Loader message="" size={40} color="#3498db" />
           <Text ml={4}>Loading users, please wait...</Text>
         </Flex>
       </Box>
