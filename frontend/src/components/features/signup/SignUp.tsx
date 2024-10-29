@@ -1,5 +1,9 @@
 import React, { useState } from "react";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  sendEmailVerification,
+  signOut
+} from "firebase/auth";
 import { Link, useNavigate } from "react-router-dom";
 import { auth } from "../login/firebaseConfig";
 import {
@@ -12,15 +16,20 @@ import {
   useToast,
   InputGroup,
   InputRightElement,
+  Flex,
   Text
 } from "@chakra-ui/react";
 
 import { BiHide, BiShow } from "react-icons/bi";
+import Loader from "../../Loader/Loader";
 
 const SignUp: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [emailValidating, setEmailValidating] = useState(false);
+
   const toast = useToast();
   const navigate = useNavigate();
 
@@ -29,9 +38,13 @@ const SignUp: React.FC = () => {
     return regex.test(email);
   };
 
-  const handleSignUp = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSignUp = async (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
+
+    setEmailValidating(true);
+
     if (!validateEmail(email)) {
+      setEmailValidating(false);
       toast({
         title: "Invalid Email",
         description: "Please enter a valid Gmail address.",
@@ -42,16 +55,24 @@ const SignUp: React.FC = () => {
       return;
     }
 
+    setLoading(true);
+
     try {
       const userCredential = await createUserWithEmailAndPassword(
         auth,
         email,
         password
       );
-      console.log("User signed up successfully:", userCredential.user);
+      const user = userCredential.user;
+
+      await sendEmailVerification(user);
+      await signOut(auth); // Sign out the user immediately after sign-up
+
+      console.log("User signed up successfully:", user);
       toast({
         title: "Sign Up successful.",
-        description: "You've signed up successfully! You can now log in.",
+        description:
+          "You've signed up successfully! Please check your email to verify.",
         status: "success",
         duration: 3000,
         isClosable: true
@@ -77,11 +98,14 @@ const SignUp: React.FC = () => {
       } else {
         console.error("An unexpected error occurred:", error);
       }
+    } finally {
+      setLoading(false);
+      setEmailValidating(false);
     }
   };
 
   const handleShowPassword = () => {
-    setShowPassword((preve) => !preve);
+    setShowPassword((prev) => !prev);
   };
 
   return (
@@ -98,7 +122,7 @@ const SignUp: React.FC = () => {
       <Heading mb={6} textAlign="center">
         Sign Up
       </Heading>
-      <form onSubmit={handleSignUp}>
+      <form onSubmit={(e) => e.preventDefault()}>
         <FormControl isRequired mb={4}>
           <FormLabel htmlFor="email">Email</FormLabel>
           <Input
@@ -133,10 +157,28 @@ const SignUp: React.FC = () => {
             </InputRightElement>
           </InputGroup>
         </FormControl>
-        <Button type="submit" colorScheme="teal" width="full">
-          Sign Up
+        <Button
+          type="submit"
+          colorScheme="teal"
+          width="full"
+          onClick={handleSignUp}
+          disabled={loading || emailValidating}
+        >
+          <Flex align="center" justify="center">
+            {loading || emailValidating ? (
+              <>
+                <Loader message="" size={20} color="#3498db" />
+                <Text ml={4} color="white">
+                  validating...
+                </Text>
+              </>
+            ) : (
+              "Sign Up"
+            )}
+          </Flex>
         </Button>
       </form>
+
       <Text mt={4} textAlign="center">
         Have an account?{" "}
         <Link to="/login">
