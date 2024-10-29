@@ -59,7 +59,7 @@ const LandingPage = () => {
           >
             <Image
               src={landingPhoto}
-              alt="Description of the image"
+              alt="landing image"
               boxSize={{ base: "100%", md: "400px" }}
               objectFit="cover"
               borderRadius="lg"
