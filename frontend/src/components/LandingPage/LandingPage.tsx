@@ -70,7 +70,7 @@ const LandingPage = () => {
               justify="center"
               px={4}
               maxW={{ base: "100%", md: "60%" }}
-              marginTop={{ base: 4, md: 0 }} 
+              marginTop={{ base: 4, md: 0 }}
             >
               <Heading
                 as="h6"
@@ -81,19 +81,16 @@ const LandingPage = () => {
                 Welcome to
               </Heading>
               <Heading
-                fontSize={{ base: "xl", md: "2xl" }} 
+                fontSize={{ base: "xl", md: "2xl" }}
                 mb={4}
                 color="teal.500"
               >
                 The Vault Gallery
               </Heading>
-              <VStack
-                spacing={1} 
-                align="flex-start"
-                mb={6}
-              >
+              <VStack spacing={1} align="flex-start" mb={6}>
                 <Text fontSize={{ base: "sm", md: "md" }} textAlign="left">
-                  Discover user albums, explore photos, and personalize your experience.
+                  Discover user albums, explore photos, and personalize your
+                  experience.
                 </Text>
                 <Text fontSize={{ base: "sm", md: "md" }} textAlign="left">
                   Start by signing in to enjoy seamless access to all features!
@@ -107,18 +104,20 @@ const LandingPage = () => {
                   </Flex>
                 </Box>
               ) : (
-                <Button
-                  colorScheme="teal"
-                  size="lg"
-                  onClick={handleGetStarted}
-                  _hover={{ bg: "teal.600" }}
-                  px={8}
-                  py={6}
-                  borderRadius="full"
-                  width={{ base: "80%", md: "auto" }}
-                >
-                  Get Started
-                </Button>
+                <Flex justify="center" align="center" width="100%">
+                  <Button
+                    colorScheme="teal"
+                    size="lg"
+                    onClick={handleGetStarted}
+                    _hover={{ bg: "teal.600" }}
+                    px={8}
+                    py={6}
+                    borderRadius="full"
+                    width={{ base: "80%", md: "auto" }}
+                  >
+                    Get Started
+                  </Button>
+                </Flex>
               )}
             </Flex>
           </Box>
