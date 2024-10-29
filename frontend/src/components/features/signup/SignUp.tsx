@@ -10,11 +10,12 @@ import {
   Input,
   Heading,
   useToast,
-  IconButton,
+  InputGroup,
+  InputRightElement,
   Text
 } from "@chakra-ui/react";
 
-import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
+import { BiHide, BiShow } from "react-icons/bi";
 
 const SignUp: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -56,7 +57,7 @@ const SignUp: React.FC = () => {
         isClosable: true
       });
 
-      setTimeout(()=>{
+      setTimeout(() => {
         navigate("/login");
       }, 3000);
     } catch (error) {
@@ -77,6 +78,10 @@ const SignUp: React.FC = () => {
         console.error("An unexpected error occurred:", error);
       }
     }
+  };
+
+  const handleShowPassword = () => {
+    setShowPassword((preve) => !preve);
   };
 
   return (
@@ -108,26 +113,25 @@ const SignUp: React.FC = () => {
         </FormControl>
         <FormControl isRequired mb={4}>
           <FormLabel htmlFor="password">Password</FormLabel>
-          <Input
-            id="password"
-            type={showPassword ? "text" : "password"}
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="Enter your password"
-            variant="filled"
-            focusBorderColor="teal.500"
-          />
-          <IconButton
-            aria-label={showPassword ? "Hide password" : "Show password"}
-            icon={showPassword ? <ViewOffIcon /> : <ViewIcon />}
-            onClick={() => setShowPassword(!showPassword)}
-            variant="link"
-            mt={2}
-            position="absolute"
-            right={0}
-            bottom={3}
-            mr={3}
-          />
+          <InputGroup>
+            <Input
+              id="password"
+              type={showPassword ? "text" : "password"}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Enter your password"
+              variant="filled"
+              focusBorderColor="teal.500"
+            />
+            <InputRightElement>
+              <span
+                className="flex text-xl cursor-pointer"
+                onClick={handleShowPassword}
+              >
+                {showPassword ? <BiShow /> : <BiHide />}
+              </span>
+            </InputRightElement>
+          </InputGroup>
         </FormControl>
         <Button type="submit" colorScheme="teal" width="full">
           Sign Up
