@@ -18,6 +18,7 @@ import { auth } from "./firebaseConfig";
 import {
   signInWithEmailAndPassword,
   GoogleAuthProvider,
+  onAuthStateChanged,
   signInWithPopup
 } from "firebase/auth";
 import { useAuth } from "../../AuthContext/AuthContext";
@@ -32,11 +33,16 @@ const Login: React.FC = () => {
   const toast = useToast();
   const navigate = useNavigate();
 
-  /**check login status once on mount**/
+  /** check login status on auth state change **/
   useEffect(() => {
-    const loggedIn = !!localStorage.getItem("isLoggedIn");
-    setIsLoggedIn(loggedIn);
-  }, []);
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setIsLoggedIn(!!user);
+      if (user && user.emailVerified) {
+        navigate("/home");
+      }
+    });
+    return () => unsubscribe();
+  }, [setIsLoggedIn]);
 
   const handleLogin = async (
     loginMethod: "email" | "google",
@@ -53,14 +59,28 @@ const Login: React.FC = () => {
           email!,
           password!
         );
+
+        await userCredential.user.reload();
+        const user = userCredential.user;
+
+        if (!user.emailVerified) {
+          toast({
+            title: "Email Not Verified",
+            description: "Please verify your email before logging in.",
+            status: "error",
+            duration: 3000,
+            isClosable: true
+          });
+          await auth.signOut();
+          return;
+        }
       } else {
         const provider = new GoogleAuthProvider();
         userCredential = await signInWithPopup(auth, provider);
       }
 
       if (userCredential.user) {
-        localStorage.setItem("isLoggedIn", "true");
-        setIsLoggedIn(true); /*update local state*/
+        setIsLoggedIn(true);
 
         toast({
           title: `${loginMethod === "email" ? "Login" : "Google Login"} successful.`,
@@ -96,6 +116,18 @@ const Login: React.FC = () => {
 
   const handleEmailLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!email || !password) {
+      toast({
+        title: "Missing Fields",
+        description: "Please fill in both email and password fields.",
+        status: "error",
+        duration: 3000,
+        isClosable: true
+      });
+      return;
+    }
+
     if (!validateEmail(email)) {
       toast({
         title: "Invalid Email",
@@ -121,7 +153,7 @@ const Login: React.FC = () => {
       <Box maxW="md" mx="auto" mt={10} p={6}>
         <Heading mb={6}>You're already logged in!</Heading>
         <Text mb={4}>
-          Click{" "}
+          Click
           <Link to="/home">
             <Text as="span" color="teal.500" fontWeight="bold">
               here
@@ -134,7 +166,7 @@ const Login: React.FC = () => {
   }
 
   const handleShowPassword = () => {
-    setShowPassword((preve) => !preve);
+    setShowPassword((prev) => !prev);
   };
 
   return (
