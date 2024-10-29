@@ -45,6 +45,9 @@ const Navbar: React.FC = () => {
         to="/users"
         size="lg"
         width="100%"
+        color="white"
+        _hover={{ bg: "blue.600", color: "white" }} 
+        _active={{ bg: "blue.700" }} 
         onClick={handleMenuClick}
       >
         Users
