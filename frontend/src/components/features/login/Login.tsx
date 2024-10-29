@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { BiHide, BiShow } from "react-icons/bi";
 import {
   Box,
   Button,
@@ -9,17 +10,17 @@ import {
   Heading,
   Text,
   Flex,
-  IconButton,
-  useToast,
+  InputGroup,
+  InputRightElement,
+  useToast
 } from "@chakra-ui/react";
 import { auth } from "./firebaseConfig";
 import {
   signInWithEmailAndPassword,
   GoogleAuthProvider,
-  signInWithPopup,
+  signInWithPopup
 } from "firebase/auth";
 import { useAuth } from "../../AuthContext/AuthContext";
-import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import Loader from "../../Loader/Loader";
 
 const Login: React.FC = () => {
@@ -40,7 +41,7 @@ const Login: React.FC = () => {
   const handleLogin = async (
     loginMethod: "email" | "google",
     email?: string,
-    password?: string,
+    password?: string
   ) => {
     setLoading(true);
     try {
@@ -50,7 +51,7 @@ const Login: React.FC = () => {
         userCredential = await signInWithEmailAndPassword(
           auth,
           email!,
-          password!,
+          password!
         );
       } else {
         const provider = new GoogleAuthProvider();
@@ -66,7 +67,7 @@ const Login: React.FC = () => {
           description: "You've logged in successfully!",
           status: "success",
           duration: 3000,
-          isClosable: true,
+          isClosable: true
         });
         navigate("/home");
       }
@@ -81,27 +82,27 @@ const Login: React.FC = () => {
         description: errorMessage,
         status: "error",
         duration: 3000,
-        isClosable: true,
+        isClosable: true
       });
     } finally {
       setLoading(false);
     }
   };
 
-  const validateEmail = (email: string) =>{
-    const regex =  /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
+  const validateEmail = (email: string) => {
+    const regex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
     return regex.test(email);
-  }
+  };
 
   const handleEmailLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!validateEmail(email)){
+    if (!validateEmail(email)) {
       toast({
         title: "Invalid Email",
         description: "Please enter a valid Gmail address.",
         status: "error",
         duration: 3000,
-        isClosable: true,
+        isClosable: true
       });
       return;
     }
@@ -118,36 +119,42 @@ const Login: React.FC = () => {
   if (isLoggedIn) {
     return (
       <Box maxW="md" mx="auto" mt={10} p={6}>
-      <Heading mb={6}>You're already logged in!</Heading>
-      <Text mb={4}>
-        Click{' '}
-        <Link to="/home">
-          <Text as="span" color="teal.500" fontWeight="bold">here</Text>
-        </Link>{' '}
-        to go to your dashboard.
-      </Text>
-    </Box>
+        <Heading mb={6}>You're already logged in!</Heading>
+        <Text mb={4}>
+          Click{" "}
+          <Link to="/home">
+            <Text as="span" color="teal.500" fontWeight="bold">
+              here
+            </Text>
+          </Link>{" "}
+          to go to your dashboard.
+        </Text>
+      </Box>
     );
   }
 
+  const handleShowPassword = () => {
+    setShowPassword((preve) => !preve);
+  };
+
   return (
-    <Box  
-    padding="1rem" 
-    mx={{ base: "20px", md: "auto" }} 
-    maxW="800px"
-    mt={10}
-    p={6}
-    borderWidth={1}
-    borderRadius="lg"
-    boxShadow="lg"
-  >
+    <Box
+      padding="1rem"
+      mx={{ base: "20px", md: "auto" }}
+      maxW="800px"
+      mt={10}
+      p={6}
+      borderWidth={1}
+      borderRadius="lg"
+      boxShadow="lg"
+    >
       {loading ? (
-       <Box textAlign="center" py={10}>
-       <Flex justifyContent="center" alignItems="center">
-         <Loader message="" size={40} color="#3498db" />
-         <Text ml={4}>Signing in...</Text>
-       </Flex>
-     </Box>
+        <Box textAlign="center" py={10}>
+          <Flex justifyContent="center" alignItems="center">
+            <Loader message="" size={40} color="#3498db" />
+            <Text ml={4}>Signing in...</Text>
+          </Flex>
+        </Box>
       ) : (
         <>
           <Heading mb={6}>Login</Heading>
@@ -166,27 +173,27 @@ const Login: React.FC = () => {
             </FormControl>
             <FormControl isRequired mb={4}>
               <FormLabel htmlFor="password">Password</FormLabel>
-              <Input
-                id="password"
-                type={showPassword ? "text" : "password"}
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Enter your password"
-                variant="filled"
-                focusBorderColor="teal.500"
-              />
-              <IconButton
-                aria-label={showPassword ? "Hide password" : "Show password"}
-                icon={showPassword ? <ViewOffIcon /> : <ViewIcon />}
-                onClick={() => setShowPassword(!showPassword)}
-                variant="link"
-                mt={2}
-                position="absolute"
-                right={0}
-                bottom={3}
-                mr={3}
-              />
+              <InputGroup>
+                <Input
+                  id="password"
+                  type={showPassword ? "text" : "password"}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Enter your password"
+                  variant="filled"
+                  focusBorderColor="teal.500"
+                />
+                <InputRightElement>
+                  <span
+                    className="flex text-xl cursor-pointer"
+                    onClick={handleShowPassword}
+                  >
+                    {showPassword ? <BiShow /> : <BiHide />}
+                  </span>
+                </InputRightElement>
+              </InputGroup>
             </FormControl>
+
             <Button type="submit" colorScheme="teal" width="full">
               Login
             </Button>
