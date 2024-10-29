@@ -144,8 +144,8 @@ const Login: React.FC = () => {
       {loading ? (
        <Box textAlign="center" py={10}>
        <Flex justifyContent="center" alignItems="center">
-         <Loader message="" size={40} color="3498db" />
-         <Text ml={4}>Authenticating, please wait...</Text>
+         <Loader message="" size={40} color="#3498db" />
+         <Text ml={4}>Signing in...</Text>
        </Flex>
      </Box>
       ) : (
