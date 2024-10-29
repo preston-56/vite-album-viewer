@@ -11,6 +11,7 @@ import {
   VStack,
   Divider
 } from "@chakra-ui/react";
+import { Link } from "react-router-dom";
 import Loader from "../Loader/Loader";
 
 interface User {
@@ -40,12 +41,8 @@ const Home: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const userResponse = await fetch(
-          `${apiUrl}/api/users`
-        );
-        const albumResponse = await fetch(
-          `${apiUrl}/api/albums`
-        );
+        const userResponse = await fetch(`${apiUrl}/api/users`);
+        const albumResponse = await fetch(`${apiUrl}/api/albums`);
 
         const usersData = await userResponse.json();
         const albumsData = await albumResponse.json();
@@ -106,46 +103,52 @@ const Home: React.FC = () => {
 
       <SimpleGrid columns={[1, 2, 3]} spacing={8}>
         {users.map((user) => (
-          <Card
-            key={user.id}
-            borderWidth="1px"
-            borderRadius="lg"
-            overflow="hidden"
-            bg="white"
-            shadow="md"
-            _hover={{ transform: "scale(1.05)", transition: "0.3s ease" }}
-            maxW="450px"
-          >
-            <CardBody>
-              <Flex alignItems="flex-start" mb={4}>
-                <Avatar
-                  name={user.name}
-                  size="md"
-                  mr={2}
-                  bg="blue.500"
-                  color="white"
-                />
-                <VStack
-                  align="start"
-                  spacing={{ base: 1, md: 2 }}
-                  pr={{ base: 3, md: 5 }}
-                  overflow="hidden"
-                >
-                  <Heading size={{ base: "sm" }} color="blue.400">
-                    {user.name}
-                  </Heading>
-                  <Text color="gray.600" fontSize={{ base: "sm" }} isTruncated>
-                    {user.email}
-                  </Text>
-                </VStack>
-              </Flex>
-              <Divider mb={4} />
-              <Text color="gray.600">
-                Albums:{" "}
-                {albums.filter((album) => album.user_id === user.id).length}
-              </Text>
-            </CardBody>
-          </Card>
+          <Link to={`/users/${user.id}/albums`} key={user.id}>
+            <Card
+              key={user.id}
+              borderWidth="1px"
+              borderRadius="lg"
+              overflow="hidden"
+              bg="white"
+              shadow="md"
+              _hover={{ transform: "scale(1.05)", transition: "0.3s ease" }}
+              maxW="450px"
+            >
+              <CardBody>
+                <Flex alignItems="flex-start" mb={4}>
+                  <Avatar
+                    name={user.name}
+                    size="md"
+                    mr={2}
+                    bg="blue.500"
+                    color="white"
+                  />
+                  <VStack
+                    align="start"
+                    spacing={{ base: 1, md: 2 }}
+                    pr={{ base: 3, md: 5 }}
+                    overflow="hidden"
+                  >
+                    <Heading size={{ base: "sm" }} color="blue.400">
+                      {user.name}
+                    </Heading>
+                    <Text
+                      color="gray.600"
+                      fontSize={{ base: "sm" }}
+                      isTruncated
+                    >
+                      {user.email}
+                    </Text>
+                  </VStack>
+                </Flex>
+                <Divider mb={4} />
+                <Text color="gray.600">
+                  Albums:{" "}
+                  {albums.filter((album) => album.user_id === user.id).length}
+                </Text>
+              </CardBody>
+            </Card>
+          </Link>
         ))}
       </SimpleGrid>
     </Box>
