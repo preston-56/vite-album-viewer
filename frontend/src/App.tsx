@@ -3,7 +3,6 @@ import {
   BrowserRouter as Router,
   Routes,
   Route,
-  Navigate,
 } from "react-router-dom";
 import Home from "./components/Home/Home";
 import Users from "./components/features/users/Users";
@@ -16,6 +15,7 @@ import EditPhoto from "./components/features/editphoto/EditPhoto";
 import NotFound from "./components/features/404/NotFound";
 import UserAlbums from "./components/albums/UserAlbums";
 import { AuthProvider } from "./components/AuthContext/AuthContext";
+import LandingPage from "./components/LandingPage/LandingPage";
 import "./App.css";
 
 const App: React.FC = () => {
@@ -26,7 +26,7 @@ const App: React.FC = () => {
       <Navbar/>
       <ErrorBoundary>
         <Routes>
-          <Route path="/" element={<Navigate to="/login" />} />
+          <Route path="/" element={<LandingPage />} />
           <Route path="/login" element={<Login />} /> 
           <Route path="/signup" element={<SignUp />} />
           <Route path="/home" element={<ProtectedRoute component={Home} />} />
