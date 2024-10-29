@@ -1,7 +1,16 @@
 import { useState } from "react";
-import { Box, Heading, Text, Button, Flex, VStack } from "@chakra-ui/react";
+import {
+  Box,
+  Heading,
+  Text,
+  Button,
+  Flex,
+  VStack,
+  Image
+} from "@chakra-ui/react";
 import Login from "../features/login/Login";
 import Loader from "../Loader/Loader";
+import landingPhoto from "../../../public/photo.png";
 
 const LandingPage = () => {
   const [showLogin, setShowLogin] = useState(false);
@@ -30,64 +39,86 @@ const LandingPage = () => {
         <Login />
       ) : (
         <Flex
-          direction="column"
+          direction={{ base: "column", md: "row" }}
           align="center"
-          maxW={{ base: "90%", md: "800px" }}
+          justify="space-between"
+          maxW={{ base: "90%", md: "1200px" }}
           mx="auto"
-          p={8}
-          borderRadius="lg"
-          boxShadow="2xl"
-          bg="white"
-          color="gray.700"
+          mt={{ base: 4, md: 0 }}
         >
-          <Heading
-            as="h6"
-            fontSize={{ base: "xl", md: "2xl" }}
-            mb={2}
-            color="teal.600"
+          <Box
+            borderRadius="lg"
+            overflow="hidden"
+            boxShadow="2xl"
+            width={{ base: "100%", md: "100%" }}
+            display="flex"
+            flexDirection={{ base: "column", md: "row" }}
+            alignItems="center"
+            p={4}
+            bg="white"
           >
-            Welcome to
-          </Heading>
-          <Heading
-            fontSize={{ base: "3xl", md: "4xl" }}
-            mb={4}
-            color="teal.500"
-          >
-            The Vault Gallery
-          </Heading>
-
-          <VStack spacing={4} align="center" mb={6} px={{ base: 4, md: 0 }}>
-            <Text fontSize={{ base: "sm", md: "md" }} textAlign="center">
-              Discover user albums, explore photos, and personalize your
-              experience.
-            </Text>
-            <Text fontSize={{ base: "sm", md: "md" }} textAlign="center">
-              Start by signing in to enjoy seamless access to all features!
-            </Text>
-          </VStack>
-
-          {loading ? (
-            <Box textAlign="center" py={10}>
-              <Flex justifyContent="center" alignItems="center">
-                <Loader message="" size={40} color="#3498db" />
-                <Text ml={4}>Loading...</Text>
-              </Flex>
-            </Box>
-          ) : (
-            <Button
-              colorScheme="teal"
-              size="lg"
-              onClick={handleGetStarted}
-              _hover={{ bg: "teal.600" }}
-              px={8}
-              py={6}
-              borderRadius="full"
-              width={{ base: "80%", md: "auto" }}
-              mt={4}
+            <Image
+              src={landingPhoto}
+              alt="Description of the image"
+              boxSize={{ base: "100%", md: "400px" }}
+              objectFit="cover"
+              borderRadius="lg"
+            />
+            <Flex
+              direction="column"
+              align="flex-start"
+              justify="center"
+              px={4}
+              maxW={{ base: "100%", md: "60%" }}
+              marginTop={4}
             >
-              Get Started
-            </Button>
-          )}
+              <Heading
+                as="h6"
+                fontSize={{ base: "xl", md: "2xl" }}
+                mb={2}
+                color="teal.600"
+              >
+                Welcome to
+              </Heading>
+              <Heading
+                fontSize={{ base: "2xl", md: "4xl" }}
+                mb={4}
+                color="teal.500"
+              >
+                The Vault Gallery
+              </Heading>
+              <VStack spacing={4} align="flex-start" mb={6}>
+                <Text fontSize={{ base: "sm", md: "md" }} textAlign="left">
+                  Discover user albums, explore photos, and personalize your
+                  experience.
+                </Text>
+                <Text fontSize={{ base: "sm", md: "md" }} textAlign="left">
+                  Start by signing in to enjoy seamless access to all features!
+                </Text>
+              </VStack>
+              {loading ? (
+                <Box textAlign="center" py={10}>
+                  <Flex justifyContent="center" alignItems="center">
+                    <Loader message="" size={40} color="#3498db" />
+                    <Text ml={4}>Loading...</Text>
+                  </Flex>
+                </Box>
+              ) : (
+                <Button
+                  colorScheme="teal"
+                  size="lg"
+                  onClick={handleGetStarted}
+                  _hover={{ bg: "teal.600" }}
+                  px={8}
+                  py={6}
+                  borderRadius="full"
+                  width={{ base: "80%", md: "auto" }}
+                >
+                  Get Started
+                </Button>
+              )}
+            </Flex>
+          </Box>
         </Flex>
       )}
     </Box>
