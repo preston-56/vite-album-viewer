@@ -2,6 +2,8 @@ import { render, screen, waitFor } from "@testing-library/react";
 import '@testing-library/jest-dom';
 import Home from "../components/Home/Home"; 
 import { ChakraProvider } from "@chakra-ui/react";
+import { MemoryRouter } from 'react-router-dom';
+
 import { vi } from 'vitest';
 
 global.fetch = vi.fn();
@@ -51,9 +53,11 @@ describe("Home Component", () => {
     });
 
     render(
-      <ChakraProvider>
-        <Home />
-      </ChakraProvider>
+      <MemoryRouter>
+        <ChakraProvider>
+          <Home />
+        </ChakraProvider>
+      </MemoryRouter>
     );
 
     await waitFor(() => {
@@ -66,7 +70,7 @@ describe("Home Component", () => {
     expect(screen.getByText("jane@example.com")).toBeInTheDocument();
     expect(screen.getByText("Albums: 2")).toBeInTheDocument();
     expect(screen.getByText("Albums: 1")).toBeInTheDocument();
-  });
+});
 
   test("displays error message if fetch fails", async () => {
     (fetch as jest.Mock).mockImplementationOnce(() => Promise.reject(new Error("Fetch error")));
