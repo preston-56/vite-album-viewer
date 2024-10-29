@@ -127,3 +127,7 @@ To setup the project locally, follow these steps:
     <img src="./frontend/public/iPhone-13-PRO-sageauth.netlify.app.png" alt="Album Viewer" width="200px">
     <p><a href="https://sageauth.netlify.app/home">View Application</a></p>
 </div>
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](./LICENSE) file for details.
