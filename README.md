@@ -124,7 +124,7 @@ To setup the project locally, follow these steps:
 
 <div style="text-align: center;">
     <h4>Vault Album Viewer</h4>
-    <img src="./frontend/public/iPhone-13-PRO-sageauth.netlify.app.png" alt="Album Viewer" width="200px">
+    <img src="./frontend/src/assets/iPhone-13-PRO-sageauth.netlify.app.png" alt="Album Viewer" width="200px">
     <p><a href="https://sageauth.netlify.app/home">View Application</a></p>
 </div>
 
