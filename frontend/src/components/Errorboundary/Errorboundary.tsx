@@ -1,34 +1,39 @@
-import React, { ErrorInfo } from "react";
+import React from "react";
+import { useToast, Box } from "@chakra-ui/react";
+import { ErrorBoundary as ReactErrorBoundary } from "react-error-boundary";
 
-interface Props {
+interface ErrorBoundaryProps {
   children: React.ReactNode;
 }
 
-interface State {
-  hasError: boolean;
-}
+const ErrorFallback: React.FC = () => {
+  return (
+    <Box textAlign="center" py={10} px={6}>
+      <Box fontSize="2xl" mb={4}>Something went wrong.</Box>
+      <Box>Please try refreshing the page.</Box>
+    </Box>
+  );
+};
 
-class ErrorBoundary extends React.Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = { hasError: false };
-  }
+const ErrorBoundary: React.FC<ErrorBoundaryProps> = ({ children }) => {
+  const toast = useToast();
 
-  static getDerivedStateFromError() {
-    return { hasError: true };
-  }
+  const handleError = (error: Error, info: React.ErrorInfo) => {
+    console.error("Error Boundary caught an error:", error, info);
+    toast({
+      title: "An error occurred.",
+      description: "Something went wrong. Please try reloading the page.",
+      status: "error",
+      duration: 5000,
+      isClosable: true,
+    });
+  };
 
-  componentDidCatch(_error: Error, errorInfo: ErrorInfo) {
-    console.error("Error Boundary caught an error:", _error, errorInfo);
-  }
-
-  render() {
-    if (this.state.hasError) {
-      return <h1>Something went wrong.</h1>;
-    }
-
-    return this.props.children;
-  }
-}
+  return (
+    <ReactErrorBoundary FallbackComponent={ErrorFallback} onError={handleError}>
+      {children}
+    </ReactErrorBoundary>
+  );
+};
 
 export default ErrorBoundary;
