@@ -10,7 +10,7 @@ import {
 } from "@chakra-ui/react";
 import Login from "../features/login/Login";
 import Loader from "../Loader/Loader";
-import landingPhoto from "../../../public/photo.png";
+import landingPhoto from "../../assets/photo.png";
 
 const LandingPage = () => {
   const [showLogin, setShowLogin] = useState(false);
